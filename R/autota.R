@@ -8,8 +8,6 @@
 #   Check Package:             'Cmd + Shift + E'
 #   Test Package:              'Cmd + Shift + T'
 
-library(glue)
-
 DEBUG <- TRUE
 
 debug_cat <- function(...) {
@@ -19,10 +17,8 @@ debug_cat <- function(...) {
 }
 
 autoTAAddin <- function(port=3000) {
-  editor <- rstudioapi::getSourceEditorContext()
-
   viewer <- getOption("viewer")
-  viewer(glue("http://localhost:{port}"))
+  viewer(glue::glue("http://localhost:{port}"))
 
   httpuv::stopAllServers()
   s <- httpuv::startServer(
@@ -43,6 +39,7 @@ autoTAAddin <- function(port=3000) {
        }
      ))
 
+  editor <- rstudioapi::getSourceEditorContext()
 
   error_handler <- function(...) {
     rlang::entrace(...)

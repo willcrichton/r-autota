@@ -25,7 +25,8 @@ class App extends React.Component {
   }
 
   render() {
-    return <div>
+    return <div className='App'>
+      <h1>Auto TA</h1>
       {!this.state.socket_connected
       ? <span>Connecting to RStudio session...</span>
       : <span>{
