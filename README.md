@@ -13,7 +13,7 @@ pwd # Copy the printed directory into your clipboard
 In R:
 
 ```r
-install.packages('path/to/r-autota', repos=NULL, source='true')
+install.packages('/path/to/r-autota', repos=NULL, type='source')
 ```
 
 To refresh the package after updating source files:
