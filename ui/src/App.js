@@ -9,6 +9,8 @@ class App extends React.Component {
     last_message: null
   }
 
+  hardcoded_msgs = ["I see that you're running into this error quite often!"]
+
   constructor(props) {
     super(props);
     this.socket = new WebSocket('ws://localhost:8080');
