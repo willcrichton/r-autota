@@ -47,7 +47,18 @@ autoTAAddin <- function(port=3000) {
   }
 
   handle_error <- function(trace) {
-    handle_obj_not_found(trace, send_message)
+    pattern <- stringr::regex("object (.*) not found")
+    match <- stringr::str_match(trace$message, pattern)
+    if (!is.na(match)) {
+      handle_obj_not_found(trace, send_message)
+      return
+    }
+    pattern <- stringr::regex("could not find function (.*)")
+    match <- stringr::str_match(trace$message, pattern)
+    if (!is.na(match)) {
+      handle_no_function(trace, send_message)
+      return
+    }
   }
 
   error_handler <- function(...) {
