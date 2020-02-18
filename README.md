@@ -21,5 +21,6 @@ To refresh the package after updating source files:
 ```r
 install.packages('devtools')
 library(devtools)
+install.packages('stringdist')
 reload(inst('autota'))
 ```

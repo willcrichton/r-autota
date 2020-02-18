@@ -15,6 +15,7 @@ find_closest_string <- function(s, max_dist = 3) {
 }
 
 handle_obj_not_found <- function(trace, send_message) {
+  #TODO: This check was already done outside, just pass match through
   pattern <- stringr::regex("object (.*) not found")
   match <- stringr::str_match(trace$message, pattern)
   if (is.na(match)) { return(FALSE); }
