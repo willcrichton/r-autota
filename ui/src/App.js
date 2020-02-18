@@ -23,12 +23,12 @@ class App extends React.Component {
   }
 
   _onMessage(message) {
+    console.log('Received message', message);
     this.setState({last_message: message});
   }
 
   render() {
-
-    const newPage= <div className='App'>
+    const newPage = <div className='App'>
       <h1>Auto TA</h1>
       {!this.state.socket_connected
       ? <div>Connecting to RStudio session...</div>

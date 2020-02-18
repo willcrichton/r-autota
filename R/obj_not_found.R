@@ -3,9 +3,8 @@ get_all_vars <- function() {
   unlist(env_vars)
 }
 
-all_vars <- get_all_vars()
-
-find_closest_string <- function(s, max_dist = 3) {
+find_closest_string <- function(s, max_dist = 2) {
+  all_vars <- get_all_vars()
   dists <- stringdist::stringdist(s, all_vars)
   sorted_dists <- sort(dists, index.return=TRUE)
   idxs_within_max <- sorted_dists$ix[sorted_dists$x <= max_dist]
@@ -15,7 +14,6 @@ find_closest_string <- function(s, max_dist = 3) {
 }
 
 handle_obj_not_found <- function(trace, send_message) {
-  #TODO: This check was already done outside, just pass match through
   pattern <- stringr::regex("object (.*) not found")
   match <- stringr::str_match(trace$message, pattern)
   if (is.na(match)) { return(FALSE); }
@@ -23,5 +21,9 @@ handle_obj_not_found <- function(trace, send_message) {
   missing_obj <- match[[1, 2]]
   matches <- find_closest_string(missing_obj)
   send_message(list(kind="obj_not_found", message=trace$message, matches=matches))
+
+  TRUE
 }
+
+
 
