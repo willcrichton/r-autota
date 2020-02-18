@@ -16,6 +16,7 @@ debug_cat <- function(...) {
   }
 }
 
+#' @export
 autoTAAddin <- function(port=3000) {
   viewer <- getOption("viewer")
   viewer(glue::glue("http://localhost:{port}"))
@@ -39,14 +40,23 @@ autoTAAddin <- function(port=3000) {
        }
      ))
 
-  editor <- rstudioapi::getSourceEditorContext()
+  # editor <- rstudioapi::getSourceEditorContext()
+
+  send_message <- function(message) {
+    socket$send(jsonlite::toJSON(message))
+  }
+
+  handle_error <- function(trace) {
+    handle_obj_not_found(trace, send_message)
+  }
 
   error_handler <- function(...) {
     rlang::entrace(...)
     trace <- rlang::last_trace()
-    message <- list(message=trace$message, trace=sapply(trace$trace$calls, function(c) { toString(c) }))
-    socket$send(jsonlite::toJSON(message))
+    handle_error(trace)
   }
+
   options(error = error_handler)
 }
+
 

@@ -20,7 +20,6 @@ class App extends React.Component {
   }
 
   _onMessage(message) {
-    console.log(message);
     this.setState({last_message: message});
   }
 
@@ -28,12 +27,24 @@ class App extends React.Component {
     return <div className='App'>
       <h1>Auto TA</h1>
       {!this.state.socket_connected
-      ? <span>Connecting to RStudio session...</span>
-      : <span>{
+      ? <div>Connecting to RStudio session...</div>
+      : <div>{
         this.state.last_message != null
-        ? <span>{this.state.last_message.message[0]}</span>
-        : <span>No error yet</span>
-      }</span>}
+        ? <div>
+          <div>You got the error: <span className='code-error'>{this.state.last_message.message[0]}</span></div>
+          {this.state.last_message.matches.length > 0
+          ? <div>
+            Did you mean one of these functions?
+            <ul>{
+              this.state.last_message.matches.map((match, i) =>
+                <li key={i}>{match}</li>
+              )
+            }</ul>
+          </div>
+          : <div>I don't know how to solve this!</div>}
+        </div>
+        : <div>No error yet</div>
+      }</div>}
     </div>;
   }
 }

@@ -11,6 +11,7 @@ LazyData: true
 Imports:
   jsonlite,
   httpuv,
+  stringdist,
   glue,
   rstudioapi,
   rlang
