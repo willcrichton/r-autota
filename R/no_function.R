@@ -1,5 +1,5 @@
 handle_no_function <- function(trace, send_message) {
-  pattern <- stringr::regex("could not find function (.*)")
+  pattern <- stringr::regex("could not find function \"(.*)\"$")
   match <- stringr::str_match(trace$message, pattern)
   if (is.na(match)) { return(FALSE); }
 

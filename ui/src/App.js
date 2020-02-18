@@ -48,11 +48,10 @@ class App extends React.Component {
     this.last = lastMsgJsx;
     let messages = this.state.messages;
     messages.push(lastMsgJsx);
-    let jsxElem = <span>
-        {messages.map((msg) => msg)}
-      </span>;
-    if (this.messagesEnd)
-    this.messagesEnd.scrollIntoView({ behavior: "smooth" });
+    let jsxElem = <span>{messages}</span>;
+    if (this.messagesEnd) {
+      this.messagesEnd.scrollIntoView({ behavior: "smooth" });
+    }
     return jsxElem;
   }
 
@@ -61,19 +60,25 @@ class App extends React.Component {
   generateLastMessage(uid=0) {
     const message = this.state.last_message.message[0];
     return <div className={"container " + (uid == 1? "darker": "")}>
-      <img src={uid == 1? "/sad-baby.png" : "/kawaii-robot-ta.png"}
-        alt="Avatar" className={uid == 1? "right" : ""}></img>
-      <p>You got the error: <span className='code-error'>{message}</span></p>
-      {this.state.last_message.matches.length > 0 && this.state.last_message.kind == 'no_function'
-          ? <div>
-            Did you mean one of these functions?
-            <ul>{
-              this.state.last_message.matches.map((match, i) =>
-                <li key={i}>{match}</li>
-              )
-            }</ul>
-          </div>
-          : <div>Hmm, I'm not sure how to help with this one yet...</div>}
+      <div className='column left'>
+        <img src={uid == 1? "/sad-baby.png" : "/kawaii-robot-ta.png"}
+             alt="Avatar" className={uid == 1? "right" : ""}></img>
+      </div>
+      <div className='column right'>
+        <div>You got the error:</div>
+        <div className='code-error'>{message}</div>
+        {this.state.last_message.matches.length > 0 &&
+         this.state.last_message.kind == 'no_function'
+                                                 ? <div>
+                                                  Did you mean one of these functions?
+                                                  <ul>{
+                                                    this.state.last_message.matches.map((match, i) =>
+                                                      <li key={i}><code>{match}</code></li>
+                                                    )
+                                                  }</ul>
+                                                </div>
+                                                : <div>Hmm, I'm not sure how to help with this one yet...</div>}
+      </div>
       </div>;
   }
 }

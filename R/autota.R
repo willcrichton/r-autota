@@ -43,7 +43,9 @@ autoTAAddin <- function(port=3000) {
   # editor <- rstudioapi::getSourceEditorContext()
 
   send_message <- function(message) {
-    socket$send(jsonlite::toJSON(message))
+    json <- jsonlite::toJSON(message)
+    debug_cat("Sending message: ", json)
+    socket$send(json)
   }
 
   handle_error <- function(trace) {

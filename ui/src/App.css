@@ -9,7 +9,23 @@ h1 {
 .code-error {
  color: red;
  font-family: Menlo, monospace;
+ margin: 5px 0 10px;
 }
+
+.column {
+    float: left;
+}
+
+.column.left {
+    width: 80px;
+}
+
+ul {
+    list-style-position: outside;
+    padding-left: 18px;
+    margin: 5px 0;
+}
+
 /* This is taken from https://www.w3schools.com/howto/howto_css_chat.asp */
 
  /* Chat containers */
