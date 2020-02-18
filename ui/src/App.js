@@ -37,9 +37,6 @@ class App extends React.Component {
         ? this.generateChat(this.state.last_message)
         : <div>No error yet</div>
       }</div>}
-    <div style={{ float:"left", clear: "both" }}
-             ref={(el) => { this.messagesEnd = el; }}>
-        </div>
     </div>;
     return newPage;
   }
@@ -67,7 +64,7 @@ class App extends React.Component {
       <img src={uid == 1? "/sad-baby.png" : "/kawaii-robot-ta.png"}
         alt="Avatar" className={uid == 1? "right" : ""}></img>
       <p>You got the error: <span className='code-error'>{message}</span></p>
-      {this.state.last_message.matches.length > 0
+      {this.state.last_message.matches.length > 0 && this.state.last_message.kind == 'no_function'
           ? <div>
             Did you mean one of these functions?
             <ul>{
@@ -76,21 +73,7 @@ class App extends React.Component {
               )
             }</ul>
           </div>
-          : <div>Hmm, I don't see any functions with a similar name to this one.</div>}
-      </div>;
-  }
-
-  generateChat(messages, uid=0) {
-    return <span>
-        {messages.map((msg) => this.generateMessage(msg, uid))}
-      </span>;
-  }
-
-  generateMessage(message, uid=0) {
-    return <div className={"container " + (uid == 1? "darker": "")}>
-      <img src={uid == 1? "/sad-baby.png" : "/kawaii-robot-ta.png"}
-        alt="Avatar" className={uid == 1? "right" : ""}></img>
-      <p>{message}</p>
+          : <div>Hmm, I'm not sure how to help with this one yet...</div>}
       </div>;
   }
 }
