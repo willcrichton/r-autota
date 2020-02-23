@@ -1,4 +1,4 @@
-handle_syntax_error <- function(trace, send_message) {
+handle_syntax_error <- function(trace) {
   pattern <- stringr::regex("Error: unexpected (.*) in:?\\s+\"(.+)\"$", dotall=TRUE)
   match <- stringr::str_match(trace$message, pattern)
   if (is.na(match)) { return(FALSE); }
@@ -20,6 +20,11 @@ handle_syntax_error <- function(trace, send_message) {
     NULL
   }
 
-  send_message(list(kind="syntax_error", message=trace$message,
-                    syntax_kind=syntax_kind, bad_expr=bad_expr, parse_info=parse_info))
+  send_message(build_error(
+    kind="syntax_error",
+    trace=trace,
+    query=trace$message,
+    syntax_kind=syntax_kind,
+    bad_expr=bad_expr,
+    parse_info=parse_info))
 }

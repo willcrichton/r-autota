@@ -8,7 +8,10 @@
 #   Check Package:             'Cmd + Shift + E'
 #   Test Package:              'Cmd + Shift + T'
 
-DEBUG <- TRUE
+library(pipeR)
+library(rlist)
+
+DEBUG <- FALSE
 
 debug_cat <- function(...) {
   if (DEBUG) {
@@ -42,16 +45,17 @@ autoTAAddin <- function(port=3000) {
 
   # editor <- rstudioapi::getSourceEditorContext()
 
-  send_message <- function(message) {
-    json <- jsonlite::toJSON(message, auto_unbox = TRUE)
+  send_message <<- function(message) {
+    json <- jsonlite::toJSON(message)
     debug_cat("Sending message: ", json)
     socket$send(json)
   }
 
   handle_error <- function(trace) {
-    handle_obj_not_found(trace, send_message) |
-    handle_no_function(trace, send_message) |
-    handle_syntax_error(trace, send_message)
+    handle_obj_not_found(trace) ||
+    handle_no_function(trace) ||
+    handle_syntax_error(trace) ||
+    handle_generic_error(trace)
   }
 
   error_handler <- function(...) {

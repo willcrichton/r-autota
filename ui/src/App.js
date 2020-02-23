@@ -92,23 +92,27 @@ class SyntaxError extends React.Component {
         <div className='block-header'>Possible causes</div>
         <ol className='cause-list'>
           <li>
-            <div><strong>Did you forget a comma, parenthesis, quote, or other symbol?</strong></div>
-            <div>For example, if you wanted to write <code>1 + 2</code> and instead wrote <code>1 2</code>, R would say "unexpected numeric constant" because R found a 2 when it was expecting a plus sign. More exampls:</div>
-            <ul>
-              <li><emph>Missing comma:</emph> writing <code>f(1 2)</code> instead of <code>f(1, 2)</code></li>
-              <li><emph>Missing parenthesis:</emph> writing <code>f 1</code> instead of <code>f(1)</code></li>
-              <li><emph>Missing quote:</emph> writing <code>f("a,1)</code> instead of <code>f("a",1)</code></li>
-            </ul>
+            <div><strong>Did you forget a comma or other symbol?</strong></div>
+            <div>For example, if you wanted to write <code>f(1, 2)</code> and instead wrote <code>f(1 2)</code>, R would say "unexpected numeric constant" because R found a 2 when it was expecting a comma.</div>
           </li>
           <li>
-            <div><strong>Are your parentheses and quotes balanced?</strong></div>
-            TODO
+            <div><strong>Are your parentheses, quotes, and brackets balanced?</strong></div>
+            <div>Every <code>(</code> needs a matching <code>)</code>, similarly for <code>""</code> and <code>[]</code>. For example, if you wanted to write <code>f(1)</code> and instead wrote <span style={{display:"none"}}>(</span>(<code>f(1))</code>, then R would say "unexpected ')'" because R didn&quot;t find a preceding "(" to match it.</div>
           </li>
         </ol>
       </div>
     </div>;
   }
 }
+
+let GenericError = (props) => {
+  return <div className='error-help'>
+    <div className='explanation block'>
+      <div className='block-header'>Explanation</div>
+      <div>I haven't been trained to understand this kind of error, sorry. You can at at least check out the StackOverflow links below.</div>
+    </div>
+  </div>;
+};
 
 class App extends React.Component {
   state = {
@@ -140,20 +144,33 @@ class App extends React.Component {
   }
 
   render() {
+    const msg = this.state.last_message;
     return <div className='App'>
       <h1>Auto TA</h1>
       {!this.state.socket_connected
         ? <div>Connecting to RStudio session...</div>
         : <div>{
-          this.state.last_message != null
+          msg != null
             ? <div>
               <div className='error-message block'>
-                <div className='block-header'>Error message:</div>
-                <pre className='code-error'>{this.state.last_message.message}</pre>
+                <div className='block-header'>Error message</div>
+                <pre className='code-error'>{msg.message}</pre>
               </div>
               {React.createElement(
-                this.errors[this.state.last_message.kind],
-                this.state.last_message)}
+                   msg.kind in this.errors
+                     ? this.errors[msg.kind]
+                     : GenericError,
+                   msg)}
+              <div className='block'>
+                <div className='block-header'>StackOverflow questions</div>
+                <div>These are the top 5 results on StackOverflow for the query:</div>
+                <pre>{msg.so_query}</pre>
+                <ol>
+                  {msg.so_questions.map((q, i) =>
+                    <li key={i}><a href={q[1]}>{q[0]}</a></li>
+                  )}
+                </ol>
+              </div>
             </div>
             : <div>No error yet</div>
         }</div>}

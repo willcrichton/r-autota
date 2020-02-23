@@ -17,4 +17,5 @@ Imports:
   stringr,
   rlist,
   pipeR,
-  memoise
+  memoise,
+  xml2

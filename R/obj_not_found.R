@@ -1,6 +1,3 @@
-library(rlist)
-library(pipeR)
-
 get_all_toplevel_vars <- function() {
   env_vars <- lapply(search(), function(env) { ls(env) })
   unlist(env_vars)
@@ -55,7 +52,7 @@ find_closest_string <- function(s, max_dist = 2, max_matches = 3) {
   vars_within_max[1:min(length(vars_within_max), max_matches)]
 }
 
-handle_obj_not_found <- function(trace, send_message) {
+handle_obj_not_found <- function(trace) {
   pattern <- stringr::regex("object '(.*)' not found")
   match <- stringr::str_match(trace$message, pattern)
   if (is.na(match)) { return(FALSE); }
@@ -63,8 +60,13 @@ handle_obj_not_found <- function(trace, send_message) {
   missing_obj <- match[[1, 2]]
   matches <- find_closest_string(missing_obj)
   packages <- find_packages_containing_var(missing_obj)
-  send_message(list(kind="obj_not_found", message=trace$message, matches=matches, packages=packages,
-                    missing_obj=missing_obj))
+  send_message(build_error(
+    kind="obj_not_found",
+    trace=trace,
+    query=trace$message,
+    matches=matches,
+    packages=packages,
+    missing_obj=missing_obj))
 
   TRUE
 }
