@@ -50,7 +50,8 @@ autoTAAddin <- function(port=3000) {
 
   handle_error <- function(trace) {
     handle_obj_not_found(trace, send_message) |
-    handle_no_function(trace, send_message);
+    handle_no_function(trace, send_message) |
+    handle_syntax_error(trace, send_message)
   }
 
   error_handler <- function(...) {

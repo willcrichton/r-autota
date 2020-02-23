@@ -12,6 +12,9 @@ Imports:
   jsonlite,
   httpuv,
   stringdist,
-  glue,
   rstudioapi,
-  rlang
+  rlang,
+  stringr,
+  rlist,
+  pipeR,
+  memoise

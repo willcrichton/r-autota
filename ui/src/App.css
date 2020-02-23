@@ -1,15 +1,32 @@
 .App {
     padding: 10px;
+    font-family: 'Roboto', 'Open Sans', arial, sans-serif;
+    font-size: 14px;
 }
 
 h1 {
     margin: 0 0 10px;
 }
 
+pre, code {
+    font-family: Menlo, monospace;
+}
+
+.block {
+    margin-bottom: 10px;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 5px;
+}
+
+.block-header {
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 3px;
+}
+
 .code-error {
- color: red;
- font-family: Menlo, monospace;
- margin: 5px 0 10px;
+    color: red;
+    margin: 0;
 }
 
 .column {
@@ -20,10 +37,14 @@ h1 {
     width: 80px;
 }
 
-ul {
+ol, ul {
     list-style-position: outside;
     padding-left: 18px;
     margin: 5px 0;
+}
+
+ol.cause-list > li {
+    margin-bottom: 10px;
 }
 
 /* This is taken from https://www.w3schools.com/howto/howto_css_chat.asp */

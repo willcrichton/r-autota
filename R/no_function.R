@@ -5,7 +5,9 @@ handle_no_function <- function(trace, send_message) {
 
   missing_obj <- match[[1, 2]]
   matches <- find_closest_string(missing_obj)
-  send_message(list(kind="no_function", message=trace$message, matches=matches))
+  packages <- find_packages_containing_var(missing_obj)
+  send_message(list(kind="no_function", message=trace$message, matches=matches, packages=packages,
+                    missing_obj=missing_obj))
 
   TRUE
 }
