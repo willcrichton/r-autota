@@ -47,6 +47,15 @@ ol.cause-list > li {
     margin-bottom: 10px;
 }
 
+.parse-info {
+    margin: 5px 0;
+    font-family: Menlo, monospace;
+}
+
+.last-token {
+    color: red;
+}
+
 /* This is taken from https://www.w3schools.com/howto/howto_css_chat.asp */
 
  /* Chat containers */
@@ -55,6 +64,7 @@ ol.cause-list > li {
   background-color: #f1f1f1;
   border-radius: 5px;
   padding: 10px;
+
   margin: 10px 0;
 }
 
