@@ -24,18 +24,3 @@ handle_no_path <- function(trace) {
 
   TRUE
 }
-
-
-
-
-
-
-# err <- "Error in file(file, \"rt\") : cannot open the connection
-# In addition: Warning message:
-# In file(file, \"rt\") :
-#   cannot open file '/Users/Emma/Documents/r/r-autota/trry.csv': No such file or directory"
-# pattern <- stringr::regex("cannot open file \'(.*)\': No such file or directory$")
-# match <- stringr::str_match(err, pattern)
-# missing_path <- match[[1, 2]]
-
-

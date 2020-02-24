@@ -11,7 +11,7 @@
 library(pipeR)
 library(rlist)
 
-DEBUG <- TRUE
+DEBUG <- FALSE
 
 debug_cat <- function(...) {
   if (DEBUG) {
