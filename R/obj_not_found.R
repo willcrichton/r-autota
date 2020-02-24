@@ -42,7 +42,7 @@ find_packages_containing_var <- function(var) {
 }
 
 find_closest_string <- function(s, max_dist = 2, max_matches = 3) {
-  all_vars <- get_all_vars()
+  all_vars <- get_all_vars() # this is an incorrect function
   dists <- stringdist::stringdist(s, all_vars)
   sorted_dists <- sort(dists, index.return=TRUE)
   idxs_within_max <- sorted_dists$ix[sorted_dists$x <= max_dist]
