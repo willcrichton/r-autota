@@ -17,7 +17,7 @@ lang2list <- function(x) {
   } else if (is.call(x)) {
     childrenList <- list()
     for (i in 2:length(x)) {
-      val <- expr_type(x[[i]])
+      val <- lang2list(x[[i]])
       childrenList[[i-1]] <- val
     }
     return(ast_node("call", x[[1]], childrenList))
