@@ -12,8 +12,9 @@ find_closest_path <- function(s, max_dist = 2, max_matches = 3) {
 }
 
 handle_no_path <- function(trace) {
-  missing_path <- trace[["trace"]][["calls"]][[1]][[2]]
-  if (is.na(missing_path)) { return(FALSE); }
+  if (is.null(trace$trace$calls)) { return(FALSE); }
+  if (length(trace$trace$calls) < 2 || length(trace$trace$calls[[1]]) < 3) { return(FALSE); }
+  missing_path <- trace$trace$calls[[1]][[2]]
   matches <- find_closest_path(missing_path)
   send_message(build_error(
     kind="missing_path",
