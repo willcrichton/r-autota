@@ -24,3 +24,5 @@ library(devtools)
 install.packages('stringdist')
 reload(inst('autota'))
 ```
+
+<!--- (TODO: check README.Rmd and NEWS section of http://r-pkgs.had.co.nz/release.html) --->

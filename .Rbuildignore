@@ -2,3 +2,4 @@
 ^\.Rproj\.user$
 ^ui$
 ^install\.r$
+^cran-comments\.md$
