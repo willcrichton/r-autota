@@ -27,4 +27,6 @@ handle_syntax_error <- function(trace) {
     syntax_kind=syntax_kind,
     bad_expr=bad_expr,
     parse_info=parse_info))
+
+  TRUE
 }

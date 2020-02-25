@@ -46,6 +46,7 @@ let convert_text = (s) => {
 };
 
 let ParseInfo = ({bad_expr, parse_info}) => {
+  bad_expr = bad_expr[0];
   let coord_map = {};
   let row = 0;
   let col = 0;
@@ -115,66 +116,40 @@ let GenericError = (props) => {
 };
 
 class App extends React.Component {
-  state = {
-    socket_connected: false,
-    messages: [],
-    last_message: null
-  }
-
   errors = {
     'obj_not_found': NotFoundError,
     'no_function': NotFoundError,
     'syntax_error': SyntaxError
   }
 
-  constructor(props) {
-    super(props);
-    this.socket = new WebSocket('ws://localhost:8080');
-    this.socket.onopen = () => {
-      this.setState({socket_connected: true});
-    }
-    this.socket.onmessage = (event) => {
-      this._onMessage(JSON.parse(event.data));
-    };
-  }
-
-  _onMessage(message) {
-    console.log('Received message', message);
-    this.setState({last_message: message});
-  }
-
   render() {
-    const msg = this.state.last_message;
     return <div className='App'>
-      <h1>Auto TA</h1>
-      {!this.state.socket_connected
-        ? <div>Connecting to RStudio session...</div>
-        : <div>{
-          msg != null
-            ? <div>
-              <div className='error-message block'>
-                <div className='block-header'>Error message</div>
-                <pre className='code-error'>{msg.message}</pre>
-              </div>
-              {React.createElement(
-                   msg.kind in this.errors
-                     ? this.errors[msg.kind]
-                     : GenericError,
-                   msg)}
-              <div className='block'>
-                <div className='block-header'>StackOverflow questions</div>
-                <div>These are the top 5 results on StackOverflow for the query:</div>
-                <pre>{msg.so_query}</pre>
-                <ol>
-                  {msg.so_questions.map((q, i) =>
-                    <li key={i}><a href={q[1]}>{q[0]}</a></li>
-                  )}
-                </ol>
-              </div>
-            </div>
-            : <div>No error yet</div>
-        }</div>}
-    </div>;
+    <h1>Auto TA</h1>
+    {this.props.kind
+      ? <div>
+        <div className='error-message block'>
+          <div className='block-header'>Error message</div>
+          <pre className='code-error'>{this.props.message}</pre>
+        </div>
+        {React.createElement(
+          this.props.kind in this.errors
+            ? this.errors[this.props.kind]
+            : GenericError,
+          this.props)}
+        <div className='block'>
+          <div className='block-header'>StackOverflow questions</div>
+          <div>These are the top 5 results on StackOverflow for the query:</div>
+          <pre>{this.props.so_query}</pre>
+          <ol>
+            {this.props.so_questions.map((q, i) =>
+              <li key={i}><a href={q[1]}>{q[0]}</a></li>
+            )}
+          </ol>
+        </div>
+      </div>
+      : <div>No error yet</div>
+    }
+    </div>
   }
 }
 

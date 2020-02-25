@@ -1,4 +1,4 @@
 Name: Auto TA
-Description: Provides interactive and contextual feedback on errors.
-Binding: autoTAAddin
+Description: Provides contextual feedback on R errors.
+Binding: addin
 Interactive: true

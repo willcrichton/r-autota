@@ -11,7 +11,6 @@ LazyData: true
 Imports:
   jsonlite,
   RJSONIO,
-  httpuv,
   stringdist,
   rstudioapi,
   rlang,
