@@ -4,7 +4,15 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+const url = window.location.href;
+let props = new URL(url).searchParams.get('q');
+if (props != null) {
+  props = JSON.parse(decodeURIComponent(props));
+} else {
+  props = {};
+}
+
+ReactDOM.render(<App {...props} />, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

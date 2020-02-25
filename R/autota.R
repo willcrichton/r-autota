@@ -11,6 +11,9 @@
 library(pipeR)
 library(rlist)
 
+DEV_URL <- "http://localhost:3000/"
+PROD_URL <- "https://willcrichton.github.io/r-autota/autota.html"
+
 DEBUG <- FALSE
 
 debug_cat <- function(...) {
@@ -19,36 +22,16 @@ debug_cat <- function(...) {
   }
 }
 
-#' @export
-autoTAAddin <- function(port=3000) {
+start_autota <- function(url) {
   viewer <- getOption("viewer")
-  viewer(glue::glue("http://localhost:{port}"))
-
-  httpuv::stopAllServers()
-  s <- httpuv::startServer(
-    "127.0.0.1", 8080,
-    list(
-       onWSOpen = function(ws) {
-         # The ws object is a WebSocket object
-         debug_cat("Server connection opened.\n")
-
-         ws$onMessage(function(binary, message) {
-           debug_cat("Server received message:", message, "\n")
-          })
-         ws$onClose(function() {
-           debug_cat("Server connection closed.\n")
-         })
-
-         socket <<- ws
-       }
-     ))
+  viewer(url)
 
   # editor <- rstudioapi::getSourceEditorContext()
 
   send_message <<- function(message) {
     json <- jsonlite::toJSON(message)
     debug_cat("Sending message: ", json)
-    socket$send(json)
+    viewer(paste0(url, "?q=", URLencode(json)))
   }
 
   handle_error <- function(trace) {
@@ -65,6 +48,16 @@ autoTAAddin <- function(port=3000) {
   }
 
   options(error = error_handler)
+}
+
+#' @export
+addin <- function() {
+  start_autota(PROD_URL)
+}
+
+#' @export
+addin_dev <- function() {
+  start_autota(DEV_URL)
 }
 
 
