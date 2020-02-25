@@ -5,7 +5,7 @@ handle_no_function <- function(trace) {
   missing_obj <- match[[1, 2]]
   matches <- find_closest_string(missing_obj)
   packages <- find_packages_containing_var(missing_obj)
-  send_message(build_error( # cool
+  send_message(build_error(
     kind="no_function",
     trace=trace,
     query=trace$message,
