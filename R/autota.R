@@ -81,6 +81,14 @@ addin <- function() {
   start_autota(url)
 }
 
+#' Disable the AutoTA RSTudio addin.
+#'
+#' @export
+stop_addin <- function() {
+  servr::daemon_stop()
+  options(error = rlang::entrace)
+}
+
 #' Run the AutoTA RStudio addin in developer mode.
 #'
 #' @export

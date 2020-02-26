@@ -1,4 +1,9 @@
-Name: Auto TA
+Name: Enable Auto TA
 Description: Provides contextual feedback on R errors.
 Binding: addin
+Interactive: true
+
+Name: Disable Auto TA
+Description: Turn off Auto TA.
+Binding: stop_addin
 Interactive: true

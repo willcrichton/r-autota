@@ -2,6 +2,7 @@
 
 export(addin)
 export(addin_dev)
+export(stop_addin)
 importFrom(glue,glue)
 importFrom(pipeR,"%>>%")
 importFrom(rlist,list.filter)
