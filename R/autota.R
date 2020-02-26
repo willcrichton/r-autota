@@ -12,7 +12,7 @@
 #' @importFrom pipeR %>>%
 #' @importFrom rlist list.zip list.filter
 
-DEV_URL <- "http://localhost:3000/r-autota/index.html"
+DEV_URL <- "http://localhost:3000/"
 DEBUG <- FALSE
 
 debug_print <- function(...) {
@@ -26,7 +26,10 @@ open_webpage <- function(url) {
   viewer(url)
 }
 
+cur_url <- NULL
+
 start_autota <- function(url) {
+  cur_url <<- url
   open_webpage(url)
 
   handle_error <- function(trace) {
@@ -52,11 +55,10 @@ start_autota <- function(url) {
   options(error = error_handler)
 }
 
-
-send_message <<- function(message) {
+send_message <- function(message) {
   json <- jsonlite::toJSON(message)
   debug_print("Sending message: ", json)
-  open_webpage(paste0(url, "?q=", utils::URLencode(json)))
+  open_webpage(paste0(cur_url, "?q=", utils::URLencode(json)))
 }
 
 start_server <- function() {
