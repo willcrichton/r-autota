@@ -1,11 +1,8 @@
-find_closest_path <- function(s, max_dist = 2, max_matches = 3) {
-  if ((substr(toString(s), 1, 1) == "/" || substr(toString(s), 1, 1) == "~")) { all_files <- list.files(path = getwd(), pattern = NULL, all.files = FALSE,
-                                                                         full.names = TRUE, recursive = FALSE,
-                                                                         ignore.case = TRUE, include.dirs = FALSE, no.. = FALSE)
-  } else {all_files <- list.files(path = getwd(), pattern = NULL, all.files = FALSE,
-                                  full.names = FALSE, recursive = FALSE,
-                                  ignore.case = TRUE, include.dirs = FALSE, no.. = FALSE)
-  }
+find_closest_path <- function(s, max_dist = 1, max_matches = 3) {
+  is_absolute_path <- substr(toString(s), 1, 1) == "/"
+  all_files <- list.files(path = getwd(), pattern = NULL, all.files = FALSE,
+                          full.names = is_absolute_path, recursive = FALSE,
+                          ignore.case = TRUE, include.dirs = FALSE, no.. = FALSE)
 
   dists <- stringdist::stringdist(s, all_files)
   sorted_dists <- sort(dists, index.return=TRUE)
@@ -39,6 +36,7 @@ handle_no_path <- function(trace) {
     kind="missing_path",
     trace=trace,
     query=trace$message,
+    query_explain="",
     matches=matches,
     missing_path=missing_path
     ))

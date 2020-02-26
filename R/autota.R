@@ -14,10 +14,14 @@
 #' @importFrom glue glue
 
 DEV_URL <- "http://localhost:3000/"
-DEBUG <- FALSE
+
+# https://www.r-bloggers.com/global-variables-in-r-packages/
+pkg.globals <- new.env()
+pkg.globals$cur_url <- NULL
+pkg.globals$debug <- FALSE
 
 debug_print <- function(...) {
-  if (DEBUG) {
+  if (pkg.globals$debug) {
     cat(...);
   }
 }
@@ -26,11 +30,6 @@ open_webpage <- function(url) {
   viewer <- getOption("viewer")
   viewer(url)
 }
-
-
-# https://www.r-bloggers.com/global-variables-in-r-packages/
-pkg.globals <- new.env()
-pkg.globals$cur_url <- NULL
 
 start_autota <- function(url) {
   pkg.globals$cur_url <- url
@@ -51,7 +50,7 @@ start_autota <- function(url) {
     withCallingHandlers({
       handle_error(trace)
     }, error = function(e) {
-      if (DEBUG) {
+      if (pkg.globals$debug) {
         print(sys.calls())
         print(e)
       }
@@ -86,7 +85,7 @@ addin <- function() {
 #'
 #' @export
 addin_dev <- function() {
-  DEBUG <<- TRUE
+  pkg.globals$debug <- TRUE
   start_autota(DEV_URL)
 }
 

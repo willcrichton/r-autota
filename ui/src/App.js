@@ -111,13 +111,16 @@ let FileNotFoundError = (props) => {
     <div className='explanation block'>
       <div className='block-header'>Explanation</div>
       <div>
-      I couldn't find your file! There is probably a typo. You were looking for <code>{props.missing_path[0]}</code>.
-      Maybe you meant:
-      <ul>
-      {props.matches.map((match) => 
-      	<li>{match}</li>
-      )}
-      </ul>
+        You probably tried to open a file, and the file path you gave is incorrect. I think the path you provided was "<code>{props.missing_path[0]}</code>".
+       {props.matches.length > 0 ?
+        <div>I found a few similarly named files. Maybe you meant:
+          <ul>
+            {props.matches.map((match) =>
+      	      <li><code>{match}</code></li>
+            )}
+          </ul>
+        </div>
+         : null}
       </div>
     </div>
   </div>;
@@ -156,9 +159,13 @@ class App extends React.Component {
           this.props)}
         <div className='block'>
           <div className='block-header'>StackOverflow questions</div>
-          <div>For this error, I searched StackOverflow for this query:</div>
-          <pre>{this.props.so_query}</pre>
-          <div>Why did I write the query this way? {this.props.query_explain}</div>
+          {this.props.query_explain
+            ? <div>
+              For this error, I searched StackOverflow for this query:
+              <pre>{this.props.so_query}</pre>
+              <div>Why did I write the query this way? {this.props.query_explain}</div>
+            </div>
+            : <div>I searched the exact error on StackOverflow and found these results:</div>}
           <ol>
             {this.props.so_questions.map((q, i) =>
               <li key={i}><a href={q[1]}>{q[0]}</a></li>
@@ -166,10 +173,10 @@ class App extends React.Component {
           </ol>
         </div>
       </div>
-      : <div>No error yet</div>
-    }
+            : <div>No error yet</div>
+          }
     </div>
-  }
+    }
 }
 
 export default App;
