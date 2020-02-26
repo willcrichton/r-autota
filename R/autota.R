@@ -12,6 +12,7 @@
 #' @importFrom pipeR %>>%
 #' @importFrom rlist list.zip list.filter
 #' @importFrom glue glue
+#' @importFrom base64enc base64encode
 
 DEV_URL <- "http://localhost:3000/"
 
@@ -63,7 +64,8 @@ start_autota <- function(url) {
 send_message <- function(message) {
   json <- jsonlite::toJSON(message)
   debug_print("Sending message: ", json)
-  open_webpage(paste0(pkg.globals$cur_url, "?q=", utils::URLencode(json)))
+  encoded_json <- utils::URLencode(base64encode(charToRaw(json)))
+  open_webpage(paste0(pkg.globals$cur_url, "?q=", encoded_json))
 }
 
 start_server <- function() {
