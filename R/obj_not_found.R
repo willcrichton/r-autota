@@ -53,8 +53,8 @@ find_closest_string <- function(s, max_dist = 2, max_matches = 3) {
 }
 
 handle_obj_not_found <- function(trace) {
-  pattern <- stringr::regex("object '(.*)' not found")
-  match <- stringr::str_match(trace$message, pattern)
+  pattern <- regex("object '(.*)' not found")
+  match <- str_match(trace$message, pattern)
   if (is.na(match)) { return(FALSE); }
 
   missing_obj <- match[[1, 2]]

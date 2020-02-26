@@ -13,7 +13,7 @@ handle_syntax_error <- function(trace) {
     {parse(text=bad_expr, keep.source=TRUE, srcfile=srcfile)},
     error=function(e){NULL})
   parse_info <- if (is.null(parse_ret)) {
-    parse_data <- getParseData(srcfile)
+    parse_data <- utils::getParseData(srcfile)
     purrr::transpose(parse_data) %>>%
       list.filter(.$terminal)
   } else {

@@ -1,7 +1,7 @@
 fetch_stack_overflow <- function(query, n = 5) {
   # Make Google URL
   base_url <- "https://stackoverflow.com/search?q="
-  url_args <- URLencode(gsub(" ", "+", query))
+  url_args <- utils::URLencode(gsub(" ", "+", query))
   url <- paste0(base_url, url_args)
 
     # Fetch and parse web page

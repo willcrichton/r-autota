@@ -1,6 +1,7 @@
+
 handle_no_function <- function(trace) {
-  pattern <- stringr::regex("could not find function \"(.*)\"$")
-  match <- stringr::str_match(trace$message, pattern)
+  pattern <- regex("could not find function \"(.*)\"$")
+  match <- str_match(trace$message, pattern)
   if (is.na(match)) { return(FALSE); }
 
   missing_obj <- match[[1, 2]]

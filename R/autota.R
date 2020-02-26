@@ -8,15 +8,15 @@
 #   Check Package:             'Cmd + Shift + E'
 #   Test Package:              'Cmd + Shift + T'
 
-library(pipeR)
-library(rlist)
+#' @importFrom stringr regex str_match
+#' @importFrom pipeR %>>%
+#' @importFrom rlist list.zip list.filter
 
-DEV_URL <- "http://localhost:3000/"
-PROD_URL <- "https://willcrichton.github.io/r-autota/autota.html"
+DEV_URL <- "http://localhost:3000/r-autota/index.html"
 
-DEBUG <- FALSE
+DEBUG <- TRUE
 
-debug_cat <- function(...) {
+debug_print <- function(...) {
   if (DEBUG) {
     cat(...);
   }
@@ -26,12 +26,10 @@ start_autota <- function(url) {
   viewer <- getOption("viewer")
   viewer(url)
 
-  # editor <- rstudioapi::getSourceEditorContext()
-
   send_message <<- function(message) {
     json <- jsonlite::toJSON(message)
-    debug_cat("Sending message: ", json)
-    viewer(paste0(url, "?q=", URLencode(json)))
+    debug_print("Sending message: ", json)
+    viewer(paste0(url, "?q=", utils::URLencode(json)))
   }
 
   handle_error <- function(trace) {
@@ -44,19 +42,44 @@ start_autota <- function(url) {
   error_handler <- function(...) {
     rlang::entrace(...)
     trace <- rlang::last_trace()
-    handle_error(trace)
+    withCallingHandlers({
+      handle_error(trace)
+    }, error = function(e) {
+      if (DEBUG) {
+        print(sys.calls())
+        print(e)
+      }
+    })
   }
 
   options(error = error_handler)
 }
 
-#' @export
-addin <- function() {
-  start_autota(PROD_URL)
+last_server <- NULL
+
+start_server <- function() {
+  if (!is.null(last_server)) {
+    last_server$stop_server()
+  }
+
+  ui_dir <- system.file("ui", "build", package = "autota")
+  last_server <<- servr::httd(ui_dir)
 }
 
+#' Run the AutoTA RStudio addin.
+#'
+#' @export
+addin <- function() {
+  start_server()
+  url <- rstudioapi::translateLocalUrl(last_server$url)
+  start_autota(url)
+}
+
+#' Run the AutoTA RStudio addin in developer mode.
+#'
 #' @export
 addin_dev <- function() {
+  DEBUG <<- TRUE
   start_autota(DEV_URL)
 }
 
