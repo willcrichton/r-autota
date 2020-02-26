@@ -70,7 +70,7 @@ start_server <- function() {
 #' @export
 addin <- function() {
   server <- start_server()
-  url <- rstudioapi::translateLocalUrl(server$url)
+  url <- rstudioapi::translateLocalUrl(server$url, absolute=TRUE)
   start_autota(url)
 }
 
