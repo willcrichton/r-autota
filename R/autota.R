@@ -54,23 +54,18 @@ start_autota <- function(url) {
   options(error = error_handler)
 }
 
-last_server <- NULL
-
 start_server <- function() {
-  if (!is.null(last_server)) {
-    last_server$stop_server()
-  }
-
+  servr::daemon_stop()
   ui_dir <- system.file("ui", "build", package = "autota")
-  last_server <<- servr::httd(ui_dir)
+  servr::httd(ui_dir)
 }
 
 #' Run the AutoTA RStudio addin.
 #'
 #' @export
 addin <- function() {
-  start_server()
-  url <- rstudioapi::translateLocalUrl(last_server$url)
+  server <- start_server()
+  url <- rstudioapi::translateLocalUrl(server$url)
   start_autota(url)
 }
 
