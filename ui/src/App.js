@@ -106,6 +106,23 @@ class SyntaxError extends React.Component {
   }
 }
 
+let FileNotFoundError = (props) => {
+  return <div className='error-help'>
+    <div className='explanation block'>
+      <div className='block-header'>Explanation</div>
+      <div>
+      I couldn't find your file! There is probably a typo. You were looking for <code>{props.missing_path[0]}</code>.
+      Maybe you meant:
+      <ul>
+      {props.matches.map((match) => 
+      	<li>{match}</li>
+      )}
+      </ul>
+      </div>
+    </div>
+  </div>;
+};
+
 let GenericError = (props) => {
   return <div className='error-help'>
     <div className='explanation block'>
@@ -119,6 +136,7 @@ class App extends React.Component {
   errors = {
     'obj_not_found': NotFoundError,
     'no_function': NotFoundError,
+    'missing_path': FileNotFoundError,
     'syntax_error': SyntaxError
   }
 

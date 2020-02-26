@@ -3,7 +3,6 @@ handle_no_function <- function(trace) {
   pattern <- regex("could not find function \"(.*)\"$")
   match <- str_match(trace$message, pattern)
   if (is.na(match)) { return(FALSE); }
-
   missing_obj <- match[[1, 2]]
   matches <- find_closest_string(missing_obj)
   packages <- find_packages_containing_var(missing_obj)

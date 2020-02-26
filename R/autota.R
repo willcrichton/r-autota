@@ -40,7 +40,9 @@ start_autota <- function(url) {
     handle_obj_not_found(trace) ||
     handle_no_function(trace) ||
     handle_syntax_error(trace) ||
+    handle_no_path(trace) ||
     handle_generic_error(trace)
+
   }
 
   error_handler <- function(...) {
