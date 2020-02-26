@@ -13,4 +13,4 @@ If you're in RStudio, refresh the page (make sure to clear your cache using Cont
 
 ## Usage
 
-In RStudio, click "Addins" (toolbar, on the right) and click "Auto TA". Then run a piece of code that generates an error, like `cat(1 2)` and watch the magic happen!
+In RStudio, click "Addins" (toolbar, on the right) and click "Enable Auto TA". Then run a piece of code that generates an error, like `cat(1 2)` and watch the magic happen!
