@@ -20,5 +20,6 @@ Imports:
   rlist,
   pipeR,
   memoise,
+  glue,
   xml2
 RoxygenNote: 7.0.2
