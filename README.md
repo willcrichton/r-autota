@@ -1,28 +1,12 @@
 # Auto TA
 
-## Install from source
+## Installation
 
-On the command line:
-
-```bash
-git clone https://github.com/willcrichton/r-autota
-cd r-autota
-pwd # Copy the printed directory into your clipboard
-```
-
-In R:
-
-```r
-install.packages('/path/to/r-autota', repos=NULL, type='source')
-```
-
-To refresh the package after updating source files:
+First, run the following R commands:
 
 ```r
 install.packages('devtools')
-library(devtools)
-install.packages('stringdist')
-reload(inst('autota'))
+devtools::install_github('willcrichton/r-autota')
 ```
 
-<!--- (TODO: check README.Rmd and NEWS section of http://r-pkgs.had.co.nz/release.html) --->
+If you're in RStudio, refresh the page (make sure to clear your cache using Control-Shift-R or Command-Shift-R).
