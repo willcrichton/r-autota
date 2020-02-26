@@ -1,4 +1,0 @@
-Name: Auto TA
-Description: Provides contextual feedback on R errors.
-Binding: addin
-Interactive: true
