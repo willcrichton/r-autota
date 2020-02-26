@@ -165,12 +165,14 @@ class App extends React.Component {
               <pre>{this.props.so_query}</pre>
               <div>Why did I write the query this way? {this.props.query_explain}</div>
             </div>
-            : <div>I searched the exact error on StackOverflow and found these results:</div>}
-          <ol>
-            {this.props.so_questions.map((q, i) =>
-              <li key={i}><a href={q[1]}>{q[0]}</a></li>
-            )}
-          </ol>
+            : <div>I searched the exact error on StackOverflow and the results below.</div>}
+          {this.props.so_questions.length > 1
+            ? <ol>
+              {this.props.so_questions.map((q, i) =>
+                <li key={i}><a href={q[1]}>{q[0]}</a></li>
+              )}
+            </ol>
+            : <i><br />No results found</i>}
         </div>
       </div>
             : <div>No error yet</div>
