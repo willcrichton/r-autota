@@ -21,10 +21,13 @@ debug_print <- function(...) {
   }
 }
 
-viewer <- getOption("viewer")
+open_webpage <- function(url) {
+  viewer <- getOption("viewer")
+  viewer(url)
+}
 
 start_autota <- function(url) {
-  viewer(url)
+  open_webpage(url)
 
   handle_error <- function(trace) {
     handle_obj_not_found(trace) ||
@@ -53,7 +56,7 @@ start_autota <- function(url) {
 send_message <<- function(message) {
   json <- jsonlite::toJSON(message)
   debug_print("Sending message: ", json)
-  viewer(paste0(url, "?q=", utils::URLencode(json)))
+  open_webpage(paste0(url, "?q=", utils::URLencode(json)))
 }
 
 start_server <- function() {
