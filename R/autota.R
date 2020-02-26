@@ -12,6 +12,7 @@
 #' @importFrom pipeR %>>%
 #' @importFrom rlist list.zip list.filter
 
+
 DEV_URL <- "http://localhost:3000/"
 DEBUG <- FALSE
 
@@ -26,10 +27,13 @@ open_webpage <- function(url) {
   viewer(url)
 }
 
-cur_url <- NULL
+
+# https://www.r-bloggers.com/global-variables-in-r-packages/
+pkg.globals <- new.env()
+pkg.globals$cur_url <- NULL
 
 start_autota <- function(url) {
-  cur_url <<- url
+  pkg.globals$cur_url <- url
   open_webpage(url)
 
   handle_error <- function(trace) {
@@ -58,7 +62,7 @@ start_autota <- function(url) {
 send_message <- function(message) {
   json <- jsonlite::toJSON(message)
   debug_print("Sending message: ", json)
-  open_webpage(paste0(cur_url, "?q=", utils::URLencode(json)))
+  open_webpage(paste0(pkg.globals$cur_url, "?q=", utils::URLencode(json)))
 }
 
 start_server <- function() {
