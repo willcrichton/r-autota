@@ -13,8 +13,7 @@
 #' @importFrom rlist list.zip list.filter
 
 DEV_URL <- "http://localhost:3000/r-autota/index.html"
-
-DEBUG <- TRUE
+DEBUG <- FALSE
 
 debug_print <- function(...) {
   if (DEBUG) {
