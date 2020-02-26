@@ -64,6 +64,7 @@ handle_obj_not_found <- function(trace) {
     kind="obj_not_found",
     trace=trace,
     query=trace$message,
+    query_explain="The error is already short, so we can search it directly.",
     matches=matches,
     packages=packages,
     missing_obj=missing_obj))

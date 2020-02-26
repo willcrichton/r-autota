@@ -23,7 +23,8 @@ handle_syntax_error <- function(trace) {
   send_message(build_error(
     kind="syntax_error",
     trace=trace,
-    query=trace$message,
+    query=glue("r error unexpected {syntax_kind}"),
+    query_explain="I took out the part in quote marks because it's too specific to our program.",
     syntax_kind=syntax_kind,
     bad_expr=bad_expr,
     parse_info=parse_info))

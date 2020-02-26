@@ -156,8 +156,9 @@ class App extends React.Component {
           this.props)}
         <div className='block'>
           <div className='block-header'>StackOverflow questions</div>
-          <div>These are the top 5 results on StackOverflow for the query:</div>
+          <div>For this error, I searched StackOverflow for this query:</div>
           <pre>{this.props.so_query}</pre>
+          <div>Why did I write the query this way? {this.props.query_explain}</div>
           <ol>
             {this.props.so_questions.map((q, i) =>
               <li key={i}><a href={q[1]}>{q[0]}</a></li>

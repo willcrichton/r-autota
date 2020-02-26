@@ -9,7 +9,8 @@ handle_no_function <- function(trace) {
   send_message(build_error(
     kind="no_function",
     trace=trace,
-    query=trace$message,
+    query=glue("r could not find function {missing_obj}"),
+    query_explain="I took out the quotation marks to avoid being overly-specific in the query. I also left out the specific call expression, only keeping the name of the function.",
     matches=matches,
     packages=packages,
     missing_obj=missing_obj))
