@@ -1,5 +1,7 @@
 # Auto TA
 
+[![Build Status](https://travis-ci.com/willcrichton/r-autota.svg?branch=master)](https://travis-ci.com/willcrichton/r-autota)
+
 Auto TA is an educational effort to help novice data scientists debug common R errors. The tool aims to provide real-time in-context support for common "object not found" and "could not find function" errors, for example.
 
 ## Installation

@@ -14,3 +14,4 @@ before_script:
   - npm run build
   - rm -r ../inst/ui && mkdir ../inst/ui
   - cp -r build ../inst/ui/
+  - cd ..
