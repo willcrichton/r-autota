@@ -9,10 +9,12 @@
 #   Test Package:              'Cmd + Shift + T'
 
 #' @importFrom stringr regex str_match
-#' @importFrom pipeR %>>%
+#' @importFrom magrittr %>%
 #' @importFrom rlist list.zip list.filter
 #' @importFrom glue glue
-#' @importFrom base64enc base64encode
+
+# https://github.com/tidyverse/magrittr/issues/29#issuecomment-74313262
+utils::globalVariables(".")
 
 DEV_URL <- "http://localhost:3000/"
 
@@ -42,7 +44,6 @@ start_autota <- function(url) {
     handle_syntax_error(trace) ||
     handle_no_path(trace) ||
     handle_generic_error(trace)
-
   }
 
   error_handler <- function(...) {
@@ -64,7 +65,7 @@ start_autota <- function(url) {
 send_message <- function(message) {
   json <- jsonlite::toJSON(message)
   debug_print("Sending message: ", json)
-  encoded_json <- utils::URLencode(base64encode(charToRaw(json)))
+  encoded_json <- utils::URLencode(base64enc::base64encode(charToRaw(json)))
   open_webpage(paste0(pkg.globals$cur_url, "?q=", encoded_json))
 }
 

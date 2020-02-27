@@ -4,7 +4,7 @@ get_all_toplevel_vars <- function() {
 }
 
 get_imported_packages <- function() {
-  search() %>>%
+  search() %>%
     lapply(function(name) {
       parts <- unlist(strsplit(name, ":"))
       if (length(parts) > 1) {
@@ -12,13 +12,13 @@ get_imported_packages <- function() {
       } else {
         NULL
       }
-    }) %>>%
+    }) %>%
     list.filter(!is.null(.))
 }
 
 get_all_package_vars <- memoise::memoise(function() {
   lookup_table <-
-    .packages(TRUE) %>>%
+    .packages(TRUE) %>%
     lapply(function(pkg) {
       tryCatch({
         list.zip(pkg=pkg, var=names(getNamespace(pkg)))
@@ -27,17 +27,17 @@ get_all_package_vars <- memoise::memoise(function() {
       }, error = function(e) {
         NULL
       })
-    }) %>>%
-    { unlist(., recursive = FALSE) } %>>%
-    { do.call(rbind, .) } %>>%
+    }) %>%
+    { unlist(., recursive = FALSE) } %>%
+    { do.call(rbind, .) } %>%
     { data.frame(.) }
 })
 
 find_packages_containing_var <- function(var) {
   all_vars <- get_all_package_vars()
   imported_pkgs <- get_imported_packages()
-  all_vars[all_vars$var == var,]$pkg %>>%
-    list.filter(!(. %in% imported_pkgs)) %>>%
+  all_vars[all_vars$var == var,]$pkg %>%
+    list.filter(!(. %in% imported_pkgs)) %>%
     unlist(.)
 }
 

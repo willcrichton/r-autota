@@ -14,7 +14,7 @@ handle_syntax_error <- function(trace) {
     error=function(e){NULL})
   parse_info <- if (is.null(parse_ret)) {
     parse_data <- utils::getParseData(srcfile)
-    purrr::transpose(parse_data) %>>%
+    purrr::transpose(parse_data) %>%
       list.filter(.$terminal)
   } else {
     NULL

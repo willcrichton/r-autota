@@ -8,14 +8,14 @@ fetch_stack_overflow <- function(query, n = 5) {
   html <- xml2::read_html(url)
   links <- xml2::xml_find_all(html, "//div[@class=\"result-link\"]//a")
 
-  links %>>%
+  links %>%
     lapply(function(link) {
-      title <- xml2::xml_text(link) %>>%
-        { stringr::str_trim(.) } %>>%
+      title <- xml2::xml_text(link) %>%
+        { stringr::str_trim(.) } %>%
         { stringr::str_sub(., start=4) }
       href <- paste0("https://stackoverflow.com", xml2::xml_attr(link, "href"))
       c(title=title, href=href)
-    }) %>>%
+    }) %>%
     { .[1:min(length(.),n)] }
 }
 
