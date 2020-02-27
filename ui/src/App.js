@@ -1,6 +1,17 @@
 import React from 'react';
-import logo from './logo.svg';
+import ReactTooltip from 'react-tooltip';
+
 import './App.css';
+
+let tooltip_id = 0;
+let Tooltip = ({children, tip}) => {
+  tooltip_id += 1;
+  const id = `tooltip${tooltip_id}`;
+  return <span className='tooltip' data-tip data-for={id}>
+    {children}<sup>?</sup>
+    <ReactTooltip effect="solid" id={id}>{tip}</ReactTooltip>
+  </span>
+};
 
 class NotFoundError extends React.Component {
   render() {
@@ -66,8 +77,6 @@ let ParseInfo = ({bad_expr, parse_info}) => {
   parse_info.forEach((parse_obj, i) => {
     let start = coord_map[parse_obj.line1-1][parse_obj.col1-1];
     let end = coord_map[parse_obj.line2-1][parse_obj.col2-1]+1;
-    console.log(start, end, parse_obj.token);
-    console.log(bad_expr.substring(last_end, start));
     parts.push(<span>{convert_text(bad_expr.substring(last_end, start))}</span>);
     const last_obj = i == parse_info.length - 1;
     const cls_name = `token stx-${parse_obj.token} ${last_obj ? "last-token" : ""}`;
@@ -84,7 +93,7 @@ class SyntaxError extends React.Component {
     return <div className='error-help'>
       <div className='explanation block'>
         <div className='block-header'>Explanation</div>
-        <div>This error means that R couldn't understand the syntax of your program. While reading left-to-right through your program, R found a "<code>{this.props.syntax_kind}</code>" that R wasn't expecting. The unexpected <code>{this.props.syntax_kind}</code> is highlighted in red below.</div>
+        <div>This error means that R couldn't understand the <Tooltip tip="Syntax means the order and kind of characters in a program. For example, we would say f(a, b) is the 'syntax' for a function call in R.">syntax</Tooltip> of your program. While reading left-to-right through your program, R found a "<code>{this.props.syntax_kind}</code>" that R wasn't expecting. The unexpected <code>{this.props.syntax_kind}</code> is highlighted in red below.</div>
         {this.props.parse_info != null
           ? <ParseInfo {...this.props} />
           : null}
@@ -145,40 +154,40 @@ class App extends React.Component {
 
   render() {
     return <div className='App'>
-    <h1>Auto TA</h1>
-    {this.props.kind
-      ? <div>
-        <div className='error-message block'>
-          <div className='block-header'>Error message</div>
-          <pre className='code-error'>{this.props.message}</pre>
+      <h1>Auto TA</h1>
+      {this.props.kind
+        ? <div>
+          <div className='error-message block'>
+            <div className='block-header'>Error message</div>
+            <pre className='code-error'>{this.props.message}</pre>
+          </div>
+          {React.createElement(
+            this.props.kind in this.errors
+              ? this.errors[this.props.kind]
+              : GenericError,
+            this.props)}
+          <div className='block'>
+            <div className='block-header'>StackOverflow questions</div>
+            {this.props.query_explain
+              ? <div>
+                For this error, I searched StackOverflow for this query:
+                <pre>{this.props.so_query}</pre>
+                <div>Why did I write the query this way? {this.props.query_explain}</div>
+              </div>
+              : <div>I searched the exact error on StackOverflow and the results below.</div>}
+            {this.props.so_questions.length > 1
+              ? <ol>
+                {this.props.so_questions.map((q, i) =>
+                  <li key={i}><a href={q[1]}>{q[0]}</a></li>
+                )}
+              </ol>
+              : <i><br />No results found</i>}
+          </div>
         </div>
-        {React.createElement(
-          this.props.kind in this.errors
-            ? this.errors[this.props.kind]
-            : GenericError,
-          this.props)}
-        <div className='block'>
-          <div className='block-header'>StackOverflow questions</div>
-          {this.props.query_explain
-            ? <div>
-              For this error, I searched StackOverflow for this query:
-              <pre>{this.props.so_query}</pre>
-              <div>Why did I write the query this way? {this.props.query_explain}</div>
-            </div>
-            : <div>I searched the exact error on StackOverflow and the results below.</div>}
-          {this.props.so_questions.length > 1
-            ? <ol>
-              {this.props.so_questions.map((q, i) =>
-                <li key={i}><a href={q[1]}>{q[0]}</a></li>
-              )}
-            </ol>
-            : <i><br />No results found</i>}
-        </div>
-      </div>
-            : <div>No error yet</div>
-          }
+        : <div>No error yet</div>
+      }
     </div>
-    }
+  }
 }
 
 export default App;
