@@ -67,7 +67,7 @@ let ParseInfo = ({bad_expr, parse_info}) => {
   let row = 0;
   let col = 0;
   for (let i = 0; i < bad_expr.length; ++i) {
-    if (bad_expr.charAt(i) == '\n') {
+    if (bad_expr.charAt(i) === '\n') {
       row += 1;
       col = 0;
     } else {
@@ -83,7 +83,7 @@ let ParseInfo = ({bad_expr, parse_info}) => {
     let start = coord_map[parse_obj.line1-1][parse_obj.col1-1];
     let end = coord_map[parse_obj.line2-1][parse_obj.col2-1]+1;
     parts.push(<span>{convert_text(bad_expr.substring(last_end, start))}</span>);
-    const last_obj = i == parse_info.length - 1;
+    const last_obj = i === parse_info.length - 1;
     const cls_name = `token stx-${parse_obj.token} ${last_obj ? "last-token" : ""}`;
     parts.push(<span className={cls_name}>
       {convert_text(bad_expr.substring(start, end))}</span>);
