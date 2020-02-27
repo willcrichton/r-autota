@@ -1,5 +1,5 @@
 #!/bin/bash
-
+set -e
 pushd ui
 npm run build
 git rm -r ../inst/ui
