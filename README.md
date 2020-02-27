@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.com/willcrichton/r-autota.svg?branch=master)](https://travis-ci.com/willcrichton/r-autota)
 
-Auto TA is a tool to help novice data scientists debug common R errors. Auto TA provides real-time, in-context support for common errors like `object not found` and `unexpected string constant`.
+Auto TA is an RStudio addin to help novice data scientists debug common R errors. Auto TA provides real-time, in-context support for common errors like `object not found` and `unexpected string constant`.
 
 ![](https://preview.redd.it/gt09yy5yoij41.png?width=3584&format=png&auto=webp&s=8e3ad2b6a38c1dab29b98f2c448749b128d3a663)
 
