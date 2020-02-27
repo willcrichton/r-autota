@@ -4,13 +4,18 @@ import ReactTooltip from 'react-tooltip';
 import './App.css';
 
 let tooltip_id = 0;
-let Tooltip = ({children, tip}) => {
+let Tooltip = ({children, text}) => {
   tooltip_id += 1;
   const id = `tooltip${tooltip_id}`;
   return <span className='tooltip' data-tip data-for={id}>
-    {children}<sup>?</sup>
-    <ReactTooltip effect="solid" id={id}>{tip}</ReactTooltip>
+    {text}<sup>?</sup>
+    <ReactTooltip effect="solid" id={id}>{children}</ReactTooltip>
   </span>
+};
+
+let common_tips = {
+  'syntax': (<Tooltip text="syntax">Syntax means the order and kind of characters in a program. For example, we would say <code>f(a, b)</code> is the "syntax" for a function call in R.</Tooltip>),
+  'variable': (<Tooltip text="variable">Variable means a name that stands in for a number, string, function, or other R object. Variables are defined by the <code>x &lt;- 1</code> syntax.</Tooltip>)
 };
 
 class NotFoundError extends React.Component {
@@ -20,7 +25,7 @@ class NotFoundError extends React.Component {
     return <div className='error-help'>
       <div className='explanation block'>
         <div className='block-header'>Explanation</div>
-        <div>This error means you tried to use a variable called "<code>{this.props.missing_obj}</code>" that R couldn't find.</div>
+        <div>This error means you tried to use a {common_tips.variable} called "<code>{this.props.missing_obj}</code>" that R couldn't find.</div>
       </div>
       <div className='causes block'>
         <div className='block-header'>Possible causes</div>
@@ -93,7 +98,7 @@ class SyntaxError extends React.Component {
     return <div className='error-help'>
       <div className='explanation block'>
         <div className='block-header'>Explanation</div>
-        <div>This error means that R couldn't understand the <Tooltip tip="Syntax means the order and kind of characters in a program. For example, we would say f(a, b) is the 'syntax' for a function call in R.">syntax</Tooltip> of your program. While reading left-to-right through your program, R found a "<code>{this.props.syntax_kind}</code>" that R wasn't expecting. The unexpected <code>{this.props.syntax_kind}</code> is highlighted in red below.</div>
+        <div>This error means that R couldn't understand the {common_tips.syntax} of your program. While reading left-to-right through your program, R found a "<code>{this.props.syntax_kind}</code>" that R wasn't expecting. The unexpected <code>{this.props.syntax_kind}</code> is highlighted in red below.</div>
         {this.props.parse_info != null
           ? <ParseInfo {...this.props} />
           : null}

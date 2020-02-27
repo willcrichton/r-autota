@@ -60,3 +60,8 @@ ol.cause-list > li {
     font-size: 10px;
     color: blue;
 }
+
+
+.__react_component_tooltip {
+    max-width: 300px;
+}
