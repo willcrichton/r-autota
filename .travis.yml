@@ -1,0 +1,6 @@
+language: r
+addons:
+  apt:
+    packages:
+      - libxml2-dev
+      - libcurl4-openssl-dev
