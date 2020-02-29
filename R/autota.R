@@ -10,7 +10,7 @@
 
 #' @importFrom stringr regex str_match
 #' @importFrom magrittr %>%
-#' @importFrom rlist list.zip list.filter
+#' @importFrom rlist list.zip list.filter list.map list.find
 #' @importFrom glue glue
 
 # https://github.com/tidyverse/magrittr/issues/29#issuecomment-74313262
@@ -63,7 +63,7 @@ start_autota <- function(url) {
 }
 
 send_message <- function(message) {
-  json <- jsonlite::toJSON(message)
+  json <- RJSONIO::toJSON(message)
   debug_print("Sending message: ", json)
   encoded_json <- utils::URLencode(base64enc::base64encode(charToRaw(json)))
   open_webpage(paste0(pkg.globals$cur_url, "?q=", encoded_json))
