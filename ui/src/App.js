@@ -22,6 +22,7 @@ class NotFoundError extends React.Component {
   render() {
     const matches = this.props.matches;
     const packages = this.props.packages;
+    const user_defined = this.props.user_defined;
     return <div className='error-help'>
       <div className='explanation block'>
         <div className='block-header'>Explanation</div>
@@ -49,6 +50,15 @@ class NotFoundError extends React.Component {
               </div>
               : null
             }
+          </li>
+          <li>
+            <span><strong>Did you forget to execute part of your script?</strong></span>
+            {user_defined[0]
+              ? <div>
+                <div>I found that line {user_defined[0].line_number} of file <code>{user_defined[0].path}</code> defines the name you're trying to use. Did you forget to run this line?</div>
+                <pre>{user_defined[0].line_text}</pre>
+              </div>
+              : null}
           </li>
         </ol>
       </div>
@@ -127,7 +137,7 @@ let FileNotFoundError = (props) => {
       <div>
         You probably tried to open a file, and the file path you gave is incorrect. I think the path you provided was "<code>{props.missing_path[0]}</code>".
        {props.matches.length > 0 ?
-        <div>I found a few similarly named files. Maybe you meant:
+        <div>I found a few similarly named files in the same directory. Maybe you meant:
           <ul>
             {props.matches.map((match) =>
       	      <li><code>{match}</code></li>
@@ -173,7 +183,7 @@ class App extends React.Component {
             this.props)}
           <div className='block'>
             <div className='block-header'>StackOverflow questions</div>
-            {this.props.query_explain
+            {this.props.query_explain && this.props.query_explain[0].length > 0
               ? <div>
                 For this error, I searched StackOverflow for this query:
                 <pre>{this.props.so_query}</pre>
@@ -183,7 +193,7 @@ class App extends React.Component {
             {this.props.so_questions.length > 1
               ? <ol>
                 {this.props.so_questions.map((q, i) =>
-                  <li key={i}><a href={q[1]}>{q[0]}</a></li>
+                  <li key={i}><a href={q.href}>{q.title}</a></li>
                 )}
               </ol>
               : <i><br />No results found</i>}

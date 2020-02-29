@@ -7,7 +7,8 @@ import * as serviceWorker from './serviceWorker';
 const url = window.location.href;
 let props = new URL(url).searchParams.get('q');
 if (props != null) {
-  props = JSON.parse(atob(decodeURIComponent(props)));
+  const props_clean = props.replace(/\./g, '+').replace(/_/g, '/');
+  props = JSON.parse(atob(props_clean));
 } else {
   props = {};
 }

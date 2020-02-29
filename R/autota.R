@@ -13,15 +13,17 @@
 #' @importFrom rlist list.zip list.filter list.map list.find
 #' @importFrom glue glue
 
+# Prevent CHECK from raising a NOTE about use of "." operator
 # https://github.com/tidyverse/magrittr/issues/29#issuecomment-74313262
 utils::globalVariables(".")
 
-DEV_URL <- "http://localhost:3000/"
-
+# Have package global mutable variables that won't break
 # https://www.r-bloggers.com/global-variables-in-r-packages/
 pkg.globals <- new.env()
 pkg.globals$cur_url <- NULL
 pkg.globals$debug <- FALSE
+
+DEV_URL <- "http://localhost:3000/"
 
 debug_print <- function(...) {
   if (pkg.globals$debug) {
@@ -63,9 +65,13 @@ start_autota <- function(url) {
 }
 
 send_message <- function(message) {
-  json <- RJSONIO::toJSON(message)
+  json <- RJSONIO::toJSON(message, asIs = TRUE)
   debug_print("Sending message: ", json)
-  encoded_json <- utils::URLencode(base64enc::base64encode(charToRaw(json)))
+  encoded_json <- json %>%
+    charToRaw(.) %>%
+    base64enc::base64encode(.) %>%
+    gsub("\\+", ".", .) %>%
+    gsub("\\/", "_", .)
   open_webpage(paste0(pkg.globals$cur_url, "?q=", encoded_json))
 }
 
