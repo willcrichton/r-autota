@@ -54,12 +54,21 @@ start_autota <- function(url) {
     rlang::entrace(...)
     trace <- rlang::last_trace()
     withCallingHandlers({
-      handle_error(trace)
+      withRestarts(
+        { handle_error(trace) },
+        ignoreError = function(e) { })
     }, error = function(e) {
       if (pkg.globals$debug) {
         print(sys.calls())
-        print(e)
+        stop(e)
+      } else {
+        cat("Auto TA failed while trying to handle your error. Try re-installing the package to see if that fixes your issue. Otherwise, click Addins > Disable Auto TA for now.
+To help us improve the Auto TA, please take a screenshot and file an issue on our GitHub:
+  https://github.com/willcrichton/r-autota
+The specific error was:\n  ")
+        cat(toString(e))
       }
+      invokeRestart("ignoreError")
     })
   }
 
