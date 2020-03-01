@@ -11,6 +11,7 @@
 #' @importFrom stringr regex str_match
 #' @importFrom magrittr %>%
 #' @importFrom rlist list.zip list.filter list.map list.find
+#' @importFrom rlang sym
 #' @importFrom glue glue
 
 # Prevent CHECK from raising a NOTE about use of "." operator
@@ -45,6 +46,7 @@ start_autota <- function(url) {
     handle_no_function(trace) ||
     handle_syntax_error(trace) ||
     handle_no_path(trace) ||
+    handle_closure_not_subsettable(trace) ||
     handle_generic_error(trace)
   }
 

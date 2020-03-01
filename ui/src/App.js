@@ -150,6 +150,24 @@ let FileNotFoundError = (props) => {
   </div>;
 };
 
+let ClosureNotSubsettableError = ({closure, subset}) => {
+  return <div className='error-help'>
+    <div className='explanation block'>
+      <div className='block-header'>Explanation</div>
+      <div>
+        <span>The code <code>{closure}</code> is an R value of type "closure", which is another name for a function. The only thing R lets you do to a function is call it, e.g. <code>{closure}()</code>, but you tried to use the closure like a dataframe or list. Specifically, the code <code>{subset}</code> is "subsetting" <code>{closure}</code>, i.e. trying to access a subset of fields.</span>
+      </div>
+    </div>
+    <div className='causes block'>
+      <div className='block-header'>Possible causes</div>
+      <ol className='cause-list'>
+        <li><strong>Did typo your intended variable as <code>{closure}</code>?</strong></li>
+        <li><strong>Did you forget to call <code>{closure}</code> before subsetting it?</strong></li>
+      </ol>
+    </div>
+  </div>;
+}
+
 let GenericError = (props) => {
   return <div className='error-help'>
     <div className='explanation block'>
@@ -164,6 +182,7 @@ class App extends React.Component {
     'obj_not_found': NotFoundError,
     'no_function': NotFoundError,
     'missing_path': FileNotFoundError,
+    'closure_not_subsettable': ClosureNotSubsettableError,
     'syntax_error': SyntaxError
   }
 
