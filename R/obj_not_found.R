@@ -71,7 +71,7 @@ get_defined_symbols <- function(path) {
 find_user_defined_symbol <- function(obj) {
   ctx <- rstudioapi::getSourceEditorContext()
   # If the user creates a new R script without saving it, then ignore this case
-  if (ctx$path == "") { return(NULL) }
+  if (is.null(ctx) || ctx$path == "") { return(NULL) }
 
   user_symbols <- get_defined_symbols(path = ctx$path)
   user_symbols %>%
