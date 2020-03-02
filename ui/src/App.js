@@ -20,9 +20,7 @@ let common_tips = {
 
 class NotFoundError extends React.Component {
   render() {
-    const matches = this.props.matches;
-    const packages = this.props.packages;
-    const user_defined = this.props.user_defined;
+    const {matches, packages, user_defined} = this.props;
     return <div className='error-help'>
       <div className='explanation block'>
         <div className='block-header'>Explanation</div>
