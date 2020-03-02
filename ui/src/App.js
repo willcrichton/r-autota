@@ -33,7 +33,7 @@ class NotFoundError extends React.Component {
         <ol className='cause-list'>
           <li>
             <div><strong>Did you make a typo writing the name?</strong></div>
-            {matches.length > 0
+            {matches[0]
               ? <div>
                 <span>I found some similar names in your program that you maybe meant:</span>
                 <ul>{matches.map((match) => <li><code>{match}</code></li>)}</ul>
@@ -43,7 +43,7 @@ class NotFoundError extends React.Component {
           </li>
           <li>
             <span><strong>Did you forget to import a package?</strong> &nbsp;</span>
-            {packages.length > 0
+            {packages[0]
               ? <div>
                 <span>I found the name you're looking for in the following packages that are installed but not imported:</span>
                 <ul>{packages.map((pkg) => <li><code>{pkg}</code></li>)}</ul>
@@ -122,7 +122,7 @@ class SyntaxError extends React.Component {
           </li>
           <li>
             <div><strong>Are your parentheses, quotes, and brackets balanced?</strong></div>
-            <div>Every <code>(</code> needs a matching <code>)</code>, similarly for <code>""</code> and <code>[]</code>. For example, if you wanted to write <code>f(1)</code> and instead wrote <span style={{display:"none"}}>(</span>(<code>f(1))</code>, then R would say "unexpected ')'" because R didn&quot;t find a preceding "(" to match it.</div>
+            <div>Every <code>(</code> needs a matching <code>)</code>, similarly for <code>""</code> and <code>[]</code>. For example, if you wanted to write <code>f(1)</code> and instead wrote <span style={{display:"none"}}>(</span><code>f(1))</code>, then R would say "unexpected ')'" because R didn&quot;t find a preceding "(" to match it.</div>
           </li>
         </ol>
       </div>
