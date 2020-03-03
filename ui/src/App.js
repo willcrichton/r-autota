@@ -184,6 +184,19 @@ class App extends React.Component {
     'syntax_error': SyntaxError
   }
 
+  constructor(props) {
+    super(props);
+    this.ws = new WebSocket('ws' + props.socket.replace(/https?/, ''));
+  }
+
+  show_help(doc) {
+    this.ws.send(JSON.stringify({
+      command: 'show_help',
+      args: doc
+    }));
+    return false;
+  }
+
   render() {
     return <div className='App'>
       <h1>Auto TA</h1>
@@ -215,6 +228,21 @@ class App extends React.Component {
               </ol>
               : <i><br />No results found</i>}
           </div>
+          {this.props.docs[0]
+            ? <div className='block'>
+              <div className='block-header'>Documentation</div>
+              <div>I found a few functions around where you got the error. It might help to read their documentation or see examples of how they work. Click below to open R's help menu.</div>
+            <ul>
+              {this.props.docs.map((doc) =>
+                <li>
+                  <a href="#" onClick={() => this.show_help(doc)}>
+                    <code>{doc.package[0] ? <span>{doc.package}::{doc.name}</span> : doc.name}</code>
+                  </a></li>
+              )}
+            </ul>
+            </div>
+            : null}
+
         </div>
         : <div>No error yet</div>
       }

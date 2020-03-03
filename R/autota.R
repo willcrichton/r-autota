@@ -23,6 +23,10 @@ utils::globalVariables(".")
 pkg.globals <- new.env()
 pkg.globals$cur_url <- NULL
 pkg.globals$debug <- FALSE
+pkg.globals$file_server <- NULL
+pkg.globals$file_url <- NULL
+pkg.globals$socket_server <- NULL
+pkg.globals$socket_url <- NULL
 
 DEV_URL <- "http://localhost:3000/"
 
@@ -32,14 +36,15 @@ debug_print <- function(...) {
   }
 }
 
-open_webpage <- function(url) {
+open_webpage <- function(args = "") {
   viewer <- getOption("viewer")
-  viewer(url)
+  full_url <-  paste0(pkg.globals$file_url, "/?", args,
+                      "&socket=", utils::URLencode(pkg.globals$socket_url))
+  viewer(full_url)
 }
 
-start_autota <- function(url) {
-  pkg.globals$cur_url <- url
-  open_webpage(url)
+start_autota <- function() {
+  open_webpage()
 
   handle_error <- function(trace) {
     handle_obj_not_found(trace) ||
@@ -83,38 +88,83 @@ send_message <- function(message) {
     base64enc::base64encode(.) %>%
     gsub("\\+", ".", .) %>%
     gsub("\\/", "_", .)
-  open_webpage(paste0(pkg.globals$cur_url, "?q=", encoded_json))
+  open_webpage(paste0("&q=", encoded_json))
 }
 
-start_server <- function() {
-  servr::daemon_stop()
+start_file_server <- function() {
+  stop_file_server()
   ui_dir <- system.file("ui", "build", package = "autota")
-  servr::httd(ui_dir)
+  pkg.globals$file_server <- servr::httd(ui_dir)
+  url <- rstudioapi::translateLocalUrl(paste0(file_server$url), absolute=TRUE)
+  pkg.globals$file_url <- url
+  url
+}
+
+stop_file_server <- function() {
+  if (!is.null(pkg.globals$file_server)) {
+    pkg.globals$file_server$stop_server()
+  }
+}
+
+start_socket_server <- function() {
+  stop_socket_server()
+  pkg.globals$socket_server <- httpuv::startServer(
+    "127.0.0.1", 8123,
+    list(
+      onWSOpen = function(ws) {
+        ws$onMessage(function(binary, message) {
+          message <- RJSONIO::fromJSON(message)
+          command <- message$command
+          args <- message$args
+          if (command == "show_help") {
+            code <- if (!is.null(args$package[[1]])) {
+              glue("help(topic='{args$name}', package='{args$package}')")
+            } else {
+              glue("help(topic='{args$name}')")
+            }
+            rstudioapi::sendToConsole(code)
+          }
+        })
+      }
+    ))
+  url <- rstudioapi::translateLocalUrl("http://127.0.0.1:8123", absolute=TRUE)
+  pkg.globals$socket_url <- url
+  url
+}
+
+stop_socket_server <- function() {
+  if (!is.null(pkg.globals$socket_server)) {
+    httpuv::stopServer(pkg.globals$socket_server)
+  }
 }
 
 #' Run the AutoTA RStudio addin.
 #'
 #' @export
 addin <- function() {
-  server <- start_server()
-  url <- rstudioapi::translateLocalUrl(server$url, absolute=TRUE)
-  start_autota(url)
+  file_url <- start_file_server()
+  socket_url <- start_socket_server()
+  start_autota(file_url, socket_url)
 }
 
 #' Disable the AutoTA RSTudio addin.
 #'
 #' @export
 stop_addin <- function() {
-  servr::daemon_stop()
-  options(error = rlang::entrace)
+  stop_file_server()
+  stop_socket_server()
 }
 
 #' Run the AutoTA RStudio addin in developer mode.
 #'
 #' @export
 addin_dev <- function() {
+  servr::daemon_stop()
+  httpuv::stopAllServers()
   pkg.globals$debug <- TRUE
-  start_autota(DEV_URL)
+  pkg.globals$file_url <- DEV_URL
+  socket_url <- start_socket_server()
+  start_autota()
 }
 
 

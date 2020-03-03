@@ -19,11 +19,41 @@ fetch_stack_overflow <- function(query, n = 5) {
     { .[1:min(length(.),n)] }
 }
 
+.get_functions_in_expression <- function(expr) {
+  if (is.call(expr)) {
+    fn <- expr[[1]]
+    fn <- if (is.symbol(fn) || (is.language(fn) && identical(fn[[1]], sym("::")))) {
+      fn
+    } else {
+      list()
+    }
+    c(fn, lapply(rlang::call_args(expr), get_functions_in_expression))
+  } else if (length(expr) == 1) {
+    list()
+  } else {
+    lapply(expr, get_functions_in_expression)
+  }
+}
+
+get_functions_in_expression <- function(expr) {
+  fns <- unlist(.get_functions_in_expression(expr), use.names = FALSE)
+}
+
+get_related_documentation <- function(trace) {
+  lowest_call <- trace$trace$calls[[1]]
+  fns <- get_functions_in_expression(lowest_call)
+  lapply(fns, function(fn) {
+    if (is.symbol(fn)) { list(name=toString(fn), package=NULL) }
+    else { list(name=toString(fn[[3]]), package=toString(fn[[2]])) }
+  })
+}
+
 build_error <- function(trace, kind, query, ...) {
   list(
     message=trace$message,
     so_query=query,
     so_questions=fetch_stack_overflow(query),
+    docs=get_related_documentation(trace),
     kind=kind,
     ...)
 }
