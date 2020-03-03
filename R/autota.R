@@ -95,7 +95,8 @@ start_file_server <- function() {
   stop_file_server()
   ui_dir <- system.file("ui", "build", package = "autota")
   pkg.globals$file_server <- servr::httd(ui_dir)
-  url <- rstudioapi::translateLocalUrl(paste0(file_server$url), absolute=TRUE)
+  url <- rstudioapi::translateLocalUrl(
+    paste0(pkg.globals$file_server$url), absolute=TRUE)
   pkg.globals$file_url <- url
   url
 }
@@ -144,7 +145,7 @@ stop_socket_server <- function() {
 addin <- function() {
   file_url <- start_file_server()
   socket_url <- start_socket_server()
-  start_autota(file_url, socket_url)
+  start_autota()
 }
 
 #' Disable the AutoTA RSTudio addin.
