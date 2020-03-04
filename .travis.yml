@@ -15,3 +15,7 @@ before_script:
   - rm -r ../inst/ui && mkdir ../inst/ui
   - cp -r build ../inst/ui/
   - cd ..
+script:
+- R CMD build .
+- R CMD check *tar.gz
+- Rscript -e "devtools::test()"
