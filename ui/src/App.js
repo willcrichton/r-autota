@@ -187,7 +187,7 @@ class App extends React.Component {
 
   constructor(props) {
     super(props);
-    this.ws = new WebSocket('ws' + props.socket.replace(/https?/, ''));
+    this.ws = new WebSocket('ws' + props.socket.replace(/http/, ''));
   }
 
   show_help(doc) {
