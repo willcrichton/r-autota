@@ -6,7 +6,7 @@ handle_syntax_error <- function(trace) {
     pattern = regex("Error in (.*) : (.*): unexpected (.*)\\n\\d+: (.*)$", dotall=TRUE),
     groups = c(4, 5))
   match <- str_match_many(trace$message, list(pattern1, pattern2))
-  if (length(match) == 1 && is.na(match)) { return(FALSE); }
+  if (is.na(match)) { return(FALSE); }
 
   syntax_kind <- match[[1]]
   bad_expr <- match[[2]]

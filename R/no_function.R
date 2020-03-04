@@ -2,7 +2,7 @@
 handle_no_function <- function(trace) {
   pattern <- regex("could not find function \"(.*)\"$")
   match <- str_match(trace$message, pattern)
-  if (length(match) == 1 && is.na(match)) { return(FALSE); }
+  if (is.na(match[[1,1]])) { return(FALSE); }
 
   missing_obj <- match[[1, 2]]
   matches <- find_closest_string(missing_obj)

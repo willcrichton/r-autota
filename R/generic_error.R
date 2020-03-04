@@ -51,7 +51,7 @@ get_related_documentation <- function(trace) {
 str_match_many <- function(message, patterns) {
   for (pattern in patterns) {
     match <- str_match(message, pattern$pattern)
-    if (length(match) != 1 || !is.na(match)) {
+    if (!is.na(match[[1,1]])) {
       return(match[,pattern$groups])
     }
   }

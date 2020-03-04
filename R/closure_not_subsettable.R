@@ -1,7 +1,7 @@
 handle_closure_not_subsettable <- function(trace) {
   pattern <- stringr::regex("Error in (.*) : object of type 'closure' is not subsettable(.*)$", dotall=TRUE)
   match <- stringr::str_match(trace$message, pattern)
-  if (length(match) == 1 && is.na(match)) { return(FALSE); }
+  if (is.na(match[[1,1]])) { return(FALSE); }
 
   bad_expr <- match[[1, 2]]
   ast <- str2lang(bad_expr)
