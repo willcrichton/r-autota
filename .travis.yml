@@ -19,4 +19,4 @@ before_script:
 script:
 - R CMD build .
 - R CMD check *tar.gz
-- Rscript -e "devtools::test()"
+- Rscript -e "devtools::test(stop_on_failure = TRUE)"
