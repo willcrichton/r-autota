@@ -1,10 +1,15 @@
 handle_syntax_error <- function(trace) {
-  pattern <- stringr::regex("Error: unexpected (.*) in:?\\s+\"(.+)\"$", dotall=TRUE)
-  match <- stringr::str_match(trace$message, pattern)
-  if (is.na(match)) { return(FALSE); }
+  pattern1 <- list(
+    pattern = regex("Error: unexpected (.*) in:?\\s+\"(.+)\"$", dotall=TRUE),
+    groups = c(2, 3))
+  pattern2 <- list(
+    pattern = regex("Error in (.*) : (.*): unexpected (.*)\\n\\d+: (.*)$", dotall=TRUE),
+    groups = c(4, 5))
+  match <- str_match_many(trace$message, list(pattern1, pattern2))
+  if (length(match) == 1 && is.na(match)) { return(FALSE); }
 
-  syntax_kind <- match[[1,2]]
-  bad_expr <- match[[1,3]]
+  syntax_kind <- match[[1]]
+  bad_expr <- match[[2]]
 
   # Extract the partial parse information for the malformed expression.
   #   A dummy "srcfile" is required to store the parse data extracted by getParseData.

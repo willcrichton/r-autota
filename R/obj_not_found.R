@@ -82,7 +82,7 @@ find_user_defined_symbol <- function(obj) {
 handle_obj_not_found <- function(trace) {
   pattern <- regex("object '(.*)' not found")
   match <- str_match(trace$message, pattern)
-  if (is.na(match)) { return(FALSE); }
+  if (length(match) == 1 && is.na(match)) { return(FALSE); }
 
   missing_obj <- match[[1, 2]]
   matches <- find_closest_string(missing_obj)

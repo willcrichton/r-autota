@@ -48,6 +48,16 @@ get_related_documentation <- function(trace) {
   })
 }
 
+str_match_many <- function(message, patterns) {
+  for (pattern in patterns) {
+    match <- str_match(message, pattern$pattern)
+    if (length(match) != 1 || !is.na(match)) {
+      return(match[,pattern$groups])
+    }
+  }
+  NA
+}
+
 build_error <- function(trace, kind, query, ...) {
   list(
     message=trace$message,

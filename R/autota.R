@@ -43,17 +43,22 @@ open_webpage <- function(args = "") {
   viewer(full_url)
 }
 
-start_autota <- function() {
-  open_webpage()
-
-  handle_error <- function(trace) {
-    handle_obj_not_found(trace) ||
+#' Runs all error handlers against an rlang trace.
+#' For internal use only.
+#'
+#' @param trace the rlang trace to handle
+#' @export
+handle_error <- function(trace) {
+  handle_obj_not_found(trace) ||
     handle_no_function(trace) ||
     handle_syntax_error(trace) ||
     handle_no_path(trace) ||
     handle_closure_not_subsettable(trace) ||
     handle_generic_error(trace)
-  }
+}
+
+start_autota <- function() {
+  open_webpage()
 
   error_handler <- function(...) {
     rlang::entrace(...)
@@ -94,23 +99,27 @@ send_message <- function(message) {
 start_file_server <- function() {
   stop_file_server()
   ui_dir <- system.file("ui", "build", package = "autota")
-  pkg.globals$file_server <- servr::httd(ui_dir)
+  port <- httpuv::randomPort()
+  pkg.globals$file_server <- httpuv::startServer(
+    "127.0.0.1", port,
+    list(staticPaths=list("/" = ui_dir)))
   url <- rstudioapi::translateLocalUrl(
-    paste0(pkg.globals$file_server$url), absolute=TRUE)
+    paste0("http://127.0.0.1:", port), absolute=TRUE)
   pkg.globals$file_url <- url
   url
 }
 
 stop_file_server <- function() {
   if (!is.null(pkg.globals$file_server)) {
-    pkg.globals$file_server$stop_server()
+    httpuv::stopServer(pkg.globals$file_server)
   }
 }
 
 start_socket_server <- function() {
   stop_socket_server()
+  port <- httpuv::randomPort()
   pkg.globals$socket_server <- httpuv::startServer(
-    "127.0.0.1", 8123,
+    "127.0.0.1", port,
     list(
       onWSOpen = function(ws) {
         ws$onMessage(function(binary, message) {
@@ -128,7 +137,7 @@ start_socket_server <- function() {
         })
       }
     ))
-  url <- rstudioapi::translateLocalUrl("http://127.0.0.1:8123", absolute=TRUE)
+  url <- rstudioapi::translateLocalUrl(paste0("http://127.0.0.1:", port), absolute=TRUE)
   pkg.globals$socket_url <- url
   url
 }
