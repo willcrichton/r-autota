@@ -62,7 +62,7 @@ get_defined_symbols <- function(path) {
   exprs <- parse(file = path, keep.source = TRUE, srcfile = src)
   exprs %>%
     list.zip(expr = ., ref = utils::getSrcref(.)) %>%
-    list.filter(is.expression(.$expr) && identical(.$expr[[1]], rlang::sym("<-"))) %>%
+    list.filter(is.language(.$expr) && identical(.$expr[[1]], rlang::sym("<-"))) %>%
     list.map(
       c(list(name = .$expr[[2]], path=basename(path)),
         get_source_lines_for_ref(src, .$ref)))
