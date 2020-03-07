@@ -25,7 +25,7 @@ class NotFoundError extends React.Component {
     return <div className='error-help'>
       <div className='explanation block'>
         <div className='block-header'>Explanation</div>
-        <div>This error means you tried to use a {common_tips.variable} called "<code>{this.props.missing_obj}</code>" that R couldn't find.</div>
+        <div>This error means you tried to use a {common_tips.variable} called <code>{this.props.missing_obj}</code> that R couldn't find.</div>
       </div>
       <div className='causes block'>
         <div className='block-header'>Possible causes</div>
@@ -107,7 +107,7 @@ class SyntaxError extends React.Component {
     return <div className='error-help'>
       <div className='explanation block'>
         <div className='block-header'>Explanation</div>
-        <div>This error means that R couldn't understand the {common_tips.syntax} of your program. While reading left-to-right through your program, R found a "<code>{this.props.syntax_kind}</code>" that R wasn't expecting. The unexpected <code>{this.props.syntax_kind}</code> is highlighted in red below.</div>
+        <div>This error means that R couldn't understand the {common_tips.syntax} of your program. While reading left-to-right through your program, R found a <code>{this.props.syntax_kind}</code> that R wasn't expecting. The unexpected <code>{this.props.syntax_kind}</code> is highlighted in red below.</div>
         {this.props.parse_info != null
           ? <ParseInfo {...this.props} />
           : null}
@@ -200,13 +200,12 @@ class App extends React.Component {
 
   render() {
     return <div className='App'>
-      <h1>Auto TA</h1>
+      <h1>Auto TA: What went wrong?</h1>
       {this.props.kind
         ? <div>
-          <div className='error-message block'>
-            <div className='block-header'>Error message</div>
-            <pre className='code-error'>{this.props.message}</pre>
-          </div>
+          <div className='error-message'>
+            <code className='code-error'>{this.props.message}</code>
+          </div><br></br>
           {React.createElement(
             this.props.kind in this.errors
               ? this.errors[this.props.kind]
@@ -217,7 +216,9 @@ class App extends React.Component {
             {this.props.query_explain && this.props.query_explain[0].length > 0
               ? <div>
                 For this error, I searched StackOverflow for this query:
-                <pre>{this.props.so_query}</pre>
+                <div><br></br>
+                    <code>{this.props.so_query}</code> 
+                </div><br></br>
                 <div>Why did I write the query this way? {this.props.query_explain}</div>
               </div>
               : <div>I searched the exact error on StackOverflow and the results below.</div>}

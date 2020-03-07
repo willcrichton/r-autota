@@ -1,7 +1,10 @@
 .App {
+    background-color: white; 
     padding: 10px;
-    font-family: 'Roboto', 'Open Sans', arial, sans-serif;
+    font-family: 'open_sans_regular';
     font-size: 14px;
+    animation-name: start_red;
+    animation-duration: 5s; 
 }
 
 h1 {
@@ -10,12 +13,19 @@ h1 {
 
 pre, code {
     font-family: Menlo, monospace;
+    background-color: #c2c2c273;
+    border-radius: 3px;
+    font-family: courier, monospace;
+    padding: 2px 4px;
 }
 
 .block {
+    box-sizing: content-box;
+    border: solid #eee 2px;
+    border-radius: 10px;
     margin-bottom: 10px;
-    border-bottom: 1px solid #ccc;
-    padding-bottom: 5px;
+    margin: 5px;
+    padding: 3px;
 }
 
 .block-header {
@@ -56,6 +66,10 @@ ol.cause-list > li {
     color: red;
 }
 
+tooltip {
+    border-bottom: 1px dotted #ccc;
+}
+
 .tooltip sup {
     font-size: 10px;
     color: blue;
@@ -64,4 +78,23 @@ ol.cause-list > li {
 
 .__react_component_tooltip {
     max-width: 300px;
+}
+
+@font-face {
+    font-family: 'open_sans_regular';
+    src: url('webfonts/opensans-regular-webfont.woff2') format('woff2'),
+         url('webfonts/opensans-regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@keyframes start_red {
+    0% {background-color: #white;}
+    16% {background-color: #fce3e1;}
+    33% {background-color: white;}
+    50% {background-color: #fce3e1;}
+    67% {background-color: white;}
+    83% {background-color: #fce3e1;}
+    100% {background-color: white;}
 }
