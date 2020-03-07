@@ -6,7 +6,9 @@ fetch_stack_overflow <- function(query, n = 5) {
 
   # Fetch and parse web page
   html <- tryCatch({xml2::read_html(url)}, error=function(e) {
-    debug_print(e)
+    if (pkg.globals$debug) {
+      print(e)
+    }
     NULL
   })
   if (is.null(html)) {
