@@ -41,6 +41,8 @@ find_packages_containing_var <- function(var) {
     unlist(.)
 }
 
+get_var <- function(var) { tryCatch({eval(parse(text=var))}, error=NULL) }
+
 find_closest_string <- function(s, max_dist = 2, max_matches = 3) {
   all_vars <- get_all_toplevel_vars()
   dists <- stringdist::stringdist(s, all_vars)
@@ -49,7 +51,8 @@ find_closest_string <- function(s, max_dist = 2, max_matches = 3) {
   if (length(idxs_within_max) == 0) { return(list()) }
 
   vars_within_max <- all_vars[idxs_within_max]
-  vars_within_max[1:min(length(vars_within_max), max_matches)]
+  vars_filtered <- vars_within_max[1:min(length(vars_within_max), max_matches)]
+  vars_filtered %>% list.map(list(var=., value=get_var(.)))
 }
 
 get_source_lines_for_ref <- function(src, ref) {
@@ -85,7 +88,7 @@ handle_obj_not_found <- function(trace) {
   if (is.na(match[[1, 1]])) { return(FALSE); }
 
   missing_obj <- match[[1, 2]]
-  matches <- find_closest_string(missing_obj)
+  matches <- find_closest_string(missing_obj) %>% list.map(.$var)
   packages <- find_packages_containing_var(missing_obj)
   user_defined <- find_user_defined_symbol(missing_obj)
 

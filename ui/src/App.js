@@ -32,10 +32,10 @@ class NotFoundError extends React.Component {
         <ol className='cause-list'>
           <li>
             <div><strong>Did you make a typo writing the name?</strong></div>
-            {matches[0]
+            {matches[0] !== null
               ? <div>
                 <span>I found some similar names in your program that you maybe meant:</span>
-                <ul>{matches.map((match) => <li><code>{match}</code></li>)}</ul>
+                <ul>{Object.values(matches).map((match) => <li><code>{match}</code></li>)}</ul>
               </div>
               : null
             }

@@ -5,7 +5,9 @@ handle_no_function <- function(trace) {
   if (is.na(match[[1,1]])) { return(FALSE); }
 
   missing_obj <- match[[1, 2]]
-  matches <- find_closest_string(missing_obj)
+  matches <- find_closest_string(missing_obj) %>%
+    list.filter(typeof(.$value) == 'closure') %>%
+    list.map(.$var)
   packages <- find_packages_containing_var(missing_obj)
   user_defined <- find_user_defined_symbol(missing_obj)
 
