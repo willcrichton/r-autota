@@ -41,7 +41,7 @@ find_packages_containing_var <- function(var) {
     unlist(.)
 }
 
-get_var <- function(var) { tryCatch({eval(parse(text=var))}, error=NULL) }
+get_var <- function(var) { tryCatch({eval(parse(text=var))}, error=function(e) { NULL }) }
 
 find_closest_string <- function(s, max_dist = 2, max_matches = 3) {
   all_vars <- get_all_toplevel_vars()
@@ -62,7 +62,12 @@ get_source_lines_for_ref <- function(src, ref) {
 
 get_defined_symbols <- function(path) {
   src <- srcfile(filename = path)
-  exprs <- parse(file = path, keep.source = TRUE, srcfile = src)
+  exprs <- tryCatch({ parse(file = path, keep.source = TRUE, srcfile = src) },
+                    error=function(e) { NULL })
+  if (is.null(exprs)) {
+    return(list())
+  }
+
   exprs %>%
     list.zip(expr = ., ref = utils::getSrcref(.)) %>%
     list.filter(is.language(.$expr) && identical(.$expr[[1]], rlang::sym("<-"))) %>%
