@@ -4,8 +4,14 @@ fetch_stack_overflow <- function(query, n = 5) {
   url_args <- utils::URLencode(gsub(" ", "+", query))
   url <- paste0(base_url, url_args)
 
-    # Fetch and parse web page
-  html <- xml2::read_html(url)
+  # Fetch and parse web page
+  html <- tryCatch({xml2::read_html(url)}, error=function(e) {
+    debug_print(e)
+    NULL
+  })
+  if (is.null(html)) {
+    return(list())
+  }
   links <- xml2::xml_find_all(html, "//div[@class=\"result-link\"]//a")
 
   links %>%
