@@ -63,6 +63,8 @@ start_autota <- function() {
   error_handler <- function(...) {
     rlang::entrace(...)
     trace <- rlang::last_trace()
+    error <- rlang::last_error()
+    toString(error)
     withCallingHandlers({
       withRestarts(
         { handle_error(trace) },

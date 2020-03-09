@@ -1,10 +1,27 @@
 .App {
-    background-color: white; 
-    padding: 10px;
-    font-family: 'open_sans_regular';
-    font-size: 14px;
-    animation-name: start_red;
-    animation-duration: 5s; 
+  padding: 10px;
+  font-family: 'roboto_round';
+  font-size: 15px;
+  line-height: 150%;
+  color: #333333;
+}
+
+.theme-default.App {
+  background-color: white;
+  animation-name: start_red;
+  animation-duration: 5s; 
+}
+
+.theme-friendly.App {
+  background-color: #fffff2;
+  animation-name: start_yellow;
+  animation-duration: 5s; 
+}
+
+#icon {
+  width: 60px;
+  height: 60px;
+  float: none;
 }
 
 h1 {
@@ -12,10 +29,9 @@ h1 {
 }
 
 pre, code {
-    font-family: Menlo, monospace;
     background-color: #c2c2c273;
     border-radius: 3px;
-    font-family: courier, monospace;
+    font-family: 'roboto_mono'; 
     padding: 2px 4px;
 }
 
@@ -25,13 +41,66 @@ pre, code {
     border-radius: 10px;
     margin-bottom: 10px;
     margin: 5px;
-    padding: 3px;
+    padding: 5px 15px;
+}
+
+.theme-default .block {
+    border: solid #eee 2px;
+    background-color: #eee;
+}
+
+.theme-friendly .block {
+    border: solid #e5ffe0 2px;
+    background-color: #e5ffe0;
 }
 
 .block-header {
-    font-weight: bold;
-    font-size: 16px;
-    margin-bottom: 3px;
+  font-weight: bold;
+  font-size: 20px;
+  margin-bottom: 3px;
+  cursor: pointer;
+  border-radius: 7px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  background-color: transparent;
+}
+
+.theme-default .block-header {
+  color: #333;
+}
+
+.theme-friendly .block-header {
+  color: #333;
+}
+
+.theme-default .active, .theme-default .block-header:hover {
+  background-color: #ccc;
+}
+
+.theme-friendly .active, .theme-friendly .block-header:hover {
+  background-color: #90ff78;
+}
+
+.block-header:after {
+  content: '\002B';
+  float: right;
+}
+
+.theme-default .block-header:after {
+  color: #54545454;
+}
+
+.active:after {
+  content: "\2212";
+}
+
+.content {
+  padding: 0 18px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
 }
 
 .code-error {
@@ -59,20 +128,21 @@ ol.cause-list > li {
 
 .parse-info {
     margin: 5px 0;
-    font-family: Menlo, monospace;
+    font-family: 'roboto_mono'; 
 }
 
 .last-token {
     color: red;
 }
 
-tooltip {
-    border-bottom: 1px dotted #ccc;
+.tooltip {
+    border-bottom: 1px dotted blue;
 }
 
 .tooltip sup {
     font-size: 10px;
     color: blue;
+    border-bottom: 0px;
 }
 
 
@@ -80,13 +150,27 @@ tooltip {
     max-width: 300px;
 }
 
+.__react_component_tooltip.type-dark {
+    font-weight: bold;
+    background-color: #f9ff9e;
+    color: #333333;
+}
+
 @font-face {
-    font-family: 'open_sans_regular';
-    src: url('webfonts/opensans-regular-webfont.woff2') format('woff2'),
-         url('webfonts/opensans-regular-webfont.woff') format('woff');
+    font-family: 'roboto_round';
+    src: url('webfonts/roboto_round_regular-webfont.woff2') format('woff2'),
+         url('webfonts/roboto_round_regular-webfont.woff') format('woff');
     font-weight: normal;
     font-style: normal;
 
+}
+
+@font-face {
+    font-family: 'roboto_mono';
+    src: url('webfonts/robotomono-regular-webfont.woff2') format('woff2'),
+         url('webfonts/robotomono-regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
 }
 
 @keyframes start_red {
@@ -97,4 +181,14 @@ tooltip {
     67% {background-color: white;}
     83% {background-color: #fce3e1;}
     100% {background-color: white;}
+}
+
+@keyframes start_yellow {
+    0% {background-color: #fffff2;}
+    16% {background-color: #faffb5;}
+    33% {background-color: #fffff2;}
+    50% {background-color: #faffb5;}
+    67% {background-color: #fffff2;}
+    83% {background-color: #faffb5;}
+    100% {background-color: #fffff2;}
 }
