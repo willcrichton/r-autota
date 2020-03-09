@@ -32,4 +32,3 @@ lang2list <- function(x) {
 lang2json <- function(x) {
   RJSONIO::toJSON(lang2list(x))
 }
-# cat(lang2json(str2lang("y <- x(10) * 2 + 1")))
