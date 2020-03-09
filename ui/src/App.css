@@ -152,6 +152,8 @@ ol.cause-list > li {
 
 .__react_component_tooltip.type-dark {
     font-weight: bold;
+}
+.theme-colorful .__react_component_tooltip.type-dark {
     background-color: #f9ff9e;
     color: #333333;
 }

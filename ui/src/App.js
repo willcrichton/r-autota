@@ -205,7 +205,7 @@ class App extends React.Component {
   }
 
   render() {
-    return <div className={'App ' + themes[1]}>
+    return <div className={'App ' + themes[0]}>
       <h1><img id="icon" src="autota_bot.svg" alt="AutoTA robot"></img> What went wrong?</h1>
       {this.props.kind
         ? <div>
