@@ -2,9 +2,9 @@ library(RJSONIO)
 
 ast_node <- function(type, str_rep, children) {
   list(
-    type=type,
-    str_rep=str_rep,
-    children=children
+    type = type,
+    str_rep = str_rep,
+    children = children
   )
 }
 
@@ -31,5 +31,3 @@ lang2list <- function(x) {
 lang2json <- function(x) {
   RJSONIO::toJSON(lang2list(x))
 }
-# cat(lang2json(str2lang("y <- x(10) * 2 + 1")))
-

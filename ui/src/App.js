@@ -38,30 +38,30 @@ class NotFoundError extends React.Component {
         <div className='content'><ol className='cause-list'>
           <li>
             <div><strong>Did you make a typo writing the name?</strong></div>
-            {matches[0]
+            {matches[0] !== null
               ? <div>
                 <span>I found some similar names in your program that you maybe meant:</span>
-                <ul>{matches.map((match) => <li><code>{match}</code></li>)}</ul>
+                <ul>{Object.values(matches).map((match) => <li><code>{match}</code></li>)}</ul>
               </div>
               : null
             }
           </li>
           <li>
             <span><strong>Did you forget to {common_tips.import} a {common_tips.package}?</strong> &nbsp;</span>
-            {packages[0]
+            {packages[0] !== null
               ? <div>
                 <span>I found the name you're looking for in the following packages that are installed but not imported:</span>
-                <ul>{packages.map((pkg) => <li><code>{pkg}</code></li>)}</ul>
+                <ul>{Object.values(packages).map((pkg) => <li><code>{pkg}</code></li>)}</ul>
               </div>
               : null
             }
           </li>
           <li>
             <span><strong>Did you forget to execute part of your {common_tips.script}?</strong></span>
-            {user_defined[0]
+            {user_defined[0] !== null
               ? <div>
-                <div>I found that line {user_defined[0].line_number} of file <code>{user_defined[0].path}</code> defines the name you're trying to use. Did you forget to run this line?</div>
-                <pre>{user_defined[0].line_text}</pre>
+                <div>I found that line {user_defined.line_number} of file <code>{user_defined.path}</code> defines the name you're trying to use. Did you forget to run this line?</div>
+                <pre>{user_defined.line_text}</pre>
               </div>
               : null}
           </li>
