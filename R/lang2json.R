@@ -2,9 +2,9 @@ library(RJSONIO)
 
 ast_node <- function(type, str_rep, children) {
   list(
-    type=type,
-    str_rep=str_rep,
-    children=children
+    type = type,
+    str_rep = str_rep,
+    children = children
   )
 }
 
@@ -18,7 +18,7 @@ lang2list <- function(x) {
     childrenList <- list()
     for (i in 2:length(x)) {
       val <- lang2list(x[[i]])
-      childrenList[[i-1]] <- val
+      childrenList[[i - 1]] <- val
     }
     return(ast_node("call", x[[1]], childrenList))
   } else if (is.pairlist(x)) {
@@ -33,4 +33,3 @@ lang2json <- function(x) {
   RJSONIO::toJSON(lang2list(x))
 }
 # cat(lang2json(str2lang("y <- x(10) * 2 + 1")))
-

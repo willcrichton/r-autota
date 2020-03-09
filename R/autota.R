@@ -32,14 +32,16 @@ DEV_URL <- "http://localhost:3000/"
 
 debug_print <- function(...) {
   if (pkg.globals$debug) {
-    cat(...);
+    cat(...)
   }
 }
 
 open_webpage <- function(args = "") {
   viewer <- getOption("viewer")
-  full_url <-  paste0(pkg.globals$file_url, "/?", args,
-                      "&socket=", utils::URLencode(pkg.globals$socket_url))
+  full_url <- paste0(
+    pkg.globals$file_url, "/?", args,
+    "&socket=", utils::URLencode(pkg.globals$socket_url)
+  )
   viewer(full_url)
 }
 
@@ -63,23 +65,29 @@ start_autota <- function() {
   error_handler <- function(...) {
     rlang::entrace(...)
     trace <- rlang::last_trace()
-    withCallingHandlers({
-      withRestarts(
-        { handle_error(trace) },
-        ignoreError = function(e) { })
-    }, error = function(e) {
-      if (pkg.globals$debug) {
-        print(sys.calls())
-        stop(e)
-      } else {
-        cat("Auto TA failed while trying to handle your error. Try re-installing the package to see if that fixes your issue. Otherwise, click Addins > Disable Auto TA for now.
+    withCallingHandlers(
+      {
+        withRestarts(
+          {
+            handle_error(trace)
+          },
+          ignoreError = function(e) { }
+        )
+      },
+      error = function(e) {
+        if (pkg.globals$debug) {
+          print(sys.calls())
+          stop(e)
+        } else {
+          cat("Auto TA failed while trying to handle your error. Try re-installing the package to see if that fixes your issue. Otherwise, click Addins > Disable Auto TA for now.
 To help us improve the Auto TA, please take a screenshot and file an issue on our GitHub:
   https://github.com/willcrichton/r-autota
 The specific error was:\n  ")
-        cat(toString(e))
+          cat(toString(e))
+        }
+        invokeRestart("ignoreError")
       }
-      invokeRestart("ignoreError")
-    })
+    )
   }
 
   options(error = error_handler)
@@ -102,9 +110,12 @@ start_file_server <- function() {
   port <- httpuv::randomPort()
   pkg.globals$file_server <- httpuv::startServer(
     "127.0.0.1", port,
-    list(staticPaths=list("/" = ui_dir)))
+    list(staticPaths = list("/" = ui_dir))
+  )
   url <- rstudioapi::translateLocalUrl(
-    paste0("http://127.0.0.1:", port), absolute=TRUE)
+    paste0("http://127.0.0.1:", port),
+    absolute = TRUE
+  )
   pkg.globals$file_url <- url
   url
 }
@@ -136,8 +147,9 @@ start_socket_server <- function() {
           }
         })
       }
-    ))
-  url <- rstudioapi::translateLocalUrl(paste0("http://127.0.0.1:", port), absolute=TRUE)
+    )
+  )
+  url <- rstudioapi::translateLocalUrl(paste0("http://127.0.0.1:", port), absolute = TRUE)
   pkg.globals$socket_url <- url
   url
 }
@@ -176,5 +188,3 @@ addin_dev <- function() {
   socket_url <- start_socket_server()
   start_autota()
 }
-
-
