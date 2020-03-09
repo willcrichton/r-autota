@@ -1,7 +1,7 @@
 Package: autota
 Type: Package
 Title: Auto TA
-Version: 0.1.0
+Version: 0.1.1
 Author: Will Crichton
 Maintainer: Will Crichton <wcrichto@cs.stanford.edu>
 Description: Contextual assistance for common error messages.
