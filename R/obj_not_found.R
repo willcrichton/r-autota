@@ -21,7 +21,8 @@ get_all_package_vars <- memoise::memoise(function() {
     .packages(TRUE) %>%
     lapply(function(pkg) {
       tryCatch({
-        list.zip(pkg=pkg, var=names(getNamespace(pkg)))
+        # partial = TRUE prevents "Registered S3 method overwritten" errors
+        list.zip(pkg = pkg, var = names(loadNamespace(pkg, partial = TRUE)))
       }, warning = function(w) {
         NULL
       }, error = function(e) {
