@@ -181,7 +181,6 @@ stop_addin <- function() {
 #'
 #' @export
 addin_dev <- function() {
-  servr::daemon_stop()
   httpuv::stopAllServers()
   pkg.globals$debug <- TRUE
   pkg.globals$file_url <- DEV_URL
