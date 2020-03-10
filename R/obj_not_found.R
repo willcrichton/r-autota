@@ -100,7 +100,7 @@ get_defined_symbols <- function(path) {
 
   exprs %>%
     list.zip(expr = ., ref = utils::getSrcref(.)) %>%
-    list.filter(is.language(.$expr) && identical(.$expr[[1]], rlang::sym("<-"))) %>%
+    list.filter(!is.symbol(.$expr) && identical(.$expr[[1]], rlang::sym("<-"))) %>%
     list.map(
       c(
         list(name = .$expr[[2]], path = basename(path)),
