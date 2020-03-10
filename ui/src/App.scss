@@ -79,7 +79,7 @@ pre, code {
 .theme-default {
     $green: #daf9d8;
 
-    .App {
+    & {
         background-color: white;
         animation-name: start_red;
         animation-duration: 5s;
@@ -114,7 +114,7 @@ pre, code {
 }
 
 .theme-friendly {
-    .App {
+    & {
         background-color: #fffff2;
         animation-name: start_yellow;
         animation-duration: 5s;
