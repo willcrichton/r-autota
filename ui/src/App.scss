@@ -1,0 +1,216 @@
+$mono-family: 'roboto_mono', monospace;
+$body-family: 'system-ui', sans-serif;
+
+@font-face {
+    font-family: 'roboto_mono';
+    src: url('webfonts/robotomono-regular-webfont.woff2') format('woff2'),
+         url('webfonts/robotomono-regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.App {
+  padding: 10px;
+  font-family: $body-family;
+  font-size: 15px;
+  line-height: 150%;
+  color: #333333;
+}
+
+#icon {
+  width: 50px;
+  height: 50px;
+  float: none;
+}
+
+h1 {
+    margin: 0 0 10px;
+
+    span {
+        position: relative;
+        bottom: 13px;
+    }
+}
+
+pre, code {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-family: $mono-family;
+    padding: 1px 4px;
+    color: black;
+}
+
+.block {
+    box-sizing: content-box;
+    border: solid #eee 2px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    margin: 5px;
+    padding: 5px 15px;
+}
+
+.block-header {
+  font-weight: bold;
+  font-size: 20px;
+  margin-bottom: 3px;
+  cursor: pointer;
+  border-radius: 7px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  background-color: transparent;
+}
+
+.theme-picker {
+    font-size: 24px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    user-select: none;
+
+    &:hover {
+        text-shadow: 1px 1px 5px black;
+    }
+}
+
+.theme-default {
+    $green: #daf9d8;
+
+    .App {
+        background-color: white;
+        animation-name: start_red;
+        animation-duration: 5s;
+    }
+
+    @keyframes start_red {
+        0% {background-color: #white;}
+        16% {background-color: #fce3e1;}
+        33% {background-color: white;}
+        50% {background-color: #fce3e1;}
+        67% {background-color: white;}
+        83% {background-color: #fce3e1;}
+        100% {background-color: white;}
+    }
+
+    .block {
+        border: none;
+        background-color: #f2f2f2;
+    }
+
+    .block-header {
+        color: #333;
+    }
+
+    .active, .block-header:hover {
+        background-color: $green;
+    }
+
+    .block-header:after {
+        color: #54545454;
+    }
+}
+
+.theme-friendly {
+    .App {
+        background-color: #fffff2;
+        animation-name: start_yellow;
+        animation-duration: 5s;
+    }
+
+    @keyframes start_yellow {
+        0% {background-color: #fffff2;}
+        16% {background-color: #faffb5;}
+        33% {background-color: #fffff2;}
+        50% {background-color: #faffb5;}
+        67% {background-color: #fffff2;}
+        83% {background-color: #faffb5;}
+        100% {background-color: #fffff2;}
+    }
+
+    .block {
+        border: solid #e5ffe0 2px;
+        background-color: #e5ffe0;
+    }
+
+    .block-header {
+        color: #333;
+    }
+
+    .active, .block-header:hover {
+        background-color: #90ff78;
+    }
+}
+
+.block-header:after {
+  content: '\002B';
+  float: right;
+}
+
+.active:after {
+  content: "\2212";
+}
+
+.content {
+  padding: 0 18px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+}
+
+.code-error {
+    color: red;
+    margin: 0;
+}
+
+.column {
+    float: left;
+
+    &.left {
+        width: 80px;
+    }
+}
+
+ol, ul {
+    list-style-position: outside;
+    padding-left: 18px;
+    margin: 5px 0;
+}
+
+ol.cause-list > li {
+    margin-bottom: 10px;
+}
+
+.parse-info {
+    margin: 5px 0;
+    font-family: $mono-family;
+}
+
+.last-token {
+    color: red;
+}
+
+.tooltip {
+    // border-bottom: 1px dotted blue;
+
+    sup {
+        font-size: 12px;
+        color: blue;
+        border-bottom: 0px;
+    }
+}
+
+.__react_component_tooltip {
+    max-width: 300px;
+
+    &.type-dark {
+        font-weight: bold;
+    }
+}
+
+.theme-colorful .__react_component_tooltip.type-dark {
+    background-color: #f9ff9e;
+    color: #333333;
+}

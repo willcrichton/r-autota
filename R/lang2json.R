@@ -17,8 +17,7 @@ lang2list <- function(x) {
   } else if (is.call(x)) {
     childrenList <- list()
     for (i in 2:length(x)) {
-      val <- lang2list(x[[i]])
-      childrenList[[i - 1]] <- val
+      childrenList[[i-1]] <- lang2list(x[[i]])
     }
     return(ast_node("call", x[[1]], childrenList))
   } else if (is.pairlist(x)) {
