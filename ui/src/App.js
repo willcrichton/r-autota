@@ -215,7 +215,7 @@ class App extends React.Component {
   render() {
     return <div className={'App ' + THEMES[this.state.theme]}>
       <h1><img id="icon" src="autota_bot.svg" alt="AutoTA robot"></img> <span>What went wrong?</span></h1>
-      <div className='theme-picker' onClick={this._cycle_theme}>🎨</div>
+      <div className='theme-picker' onClick={this._cycle_theme}><span role="img" aria-label="Theme picker">🎨</span></div>
       {this.props.kind
         ? <div>
           <div className='error-message'>
