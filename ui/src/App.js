@@ -2,7 +2,7 @@
 import React from 'react';
 import ReactTooltip from 'react-tooltip';
 
-import './App.css';
+import './App.scss';
 
 let tooltip_id = 0;
 let Tooltip = ({children, text}) => {
@@ -14,7 +14,7 @@ let Tooltip = ({children, text}) => {
   </span>
 };
 
-let themes = ['theme-default', 'theme-friendly'];
+const THEMES = ['theme-default', 'theme-friendly'];
 
 let common_tips = {
   'syntax': (<Tooltip text="syntax">Syntax means the order and kind of characters in a program. For example, we would say <code>f(a, b)</code> is the "syntax" for a function call in R.</Tooltip>),
@@ -30,7 +30,7 @@ class NotFoundError extends React.Component {
     const {matches, packages, user_defined} = this.props;
     return <div className='error-help'>
       <div className='explanation block'>
-        <button className='block-header' onClick={on_header_click}>Explanation</button>
+        <button className='block-header' onClick={on_header_click}>Explanation of error</button>
         <div className='content'>This error means you tried to use a {common_tips.variable} called <code>{this.props.missing_obj}</code> that R couldn't find.</div>
       </div>
       <div className='causes block'>
@@ -112,25 +112,25 @@ class SyntaxError extends React.Component {
   render() {
     return <div className='error-help'>
       <div className='explanation block'>
-        <button className='block-header' onClick={on_header_click}>Explanation</button>
-        <div className='content'>This error means that R couldn't understand the {common_tips.syntax} of your program. While reading <b>left-to-right</b> through your program, R found a <code>{this.props.syntax_kind}</code> that R wasn't expecting. The unexpected <code>{this.props.syntax_kind}</code> is in red below.<br></br>
-        {this.props.parse_info != null
-          ? <ParseInfo {...this.props} />
-          : null}
-      </div></div>
-      <div className='causes block'>
-        <button className='block-header' onClick={on_header_click}>Possible causes</button>
-        <div className='content'><ol className='cause-list'>
-          <li>
-            <div><strong>Did you forget a comma or other symbol?</strong></div>
-            <div>For example, if you wanted to write <code>f(1, 2)</code> and instead wrote <code>f(1 2)</code>, R would say "unexpected numeric {common_tips.constant}" because R found a 2 when it was expecting a comma.</div>
-          </li>
-          <li>
-            <div><strong>Are your parentheses, quotes, and brackets balanced?</strong></div>
-            <div>Every <code>(</code> needs a matching <code>)</code>, similarly for <code>""</code> and <code>[]</code>. For example, if you wanted to write <code>f(1)</code> and instead wrote <span style={{display:"none"}}>(</span><code>f(1))</code>, then R would say "unexpected <code>)</code>" because R didn't find a preceding <code>(</code> to match it.</div>
-          </li>
-        </ol></div>
-      </div>
+        <button className='block-header' onClick={on_header_click}>Explanation of error</button>
+        <div className='content'>This error means that R couldn't understand the {common_tips.syntax} of your program. While reading <b>left-to-right</b> through your program, R found a <code>{this.props.syntax_kind}</code> that R wasn't expecting. The <code>unexpected {this.props.syntax_kind}</code> is in red below.<br /><br />
+          {this.props.parse_info != null
+            ? <ParseInfo {...this.props} />
+            : null}
+        </div></div>
+        <div className='causes block'>
+          <button className='block-header' onClick={on_header_click}>Possible causes</button>
+          <div className='content'><ol className='cause-list'>
+            <li>
+              <div><strong>Did you forget a comma or other symbol?</strong></div>
+              <div>For example, if you wanted to write <code>f(1, 2)</code> and instead wrote <code>f(1 2)</code>, R would say <code>unexpected numeric {common_tips.constant}</code> because R found a 2 when it was expecting a comma.</div>
+            </li>
+            <li>
+              <div><strong>Are your parentheses, quotes, and brackets balanced?</strong></div>
+              <div>Every <code>(</code> needs a matching <code>)</code>, similarly for <code>""</code> and <code>[]</code>. For example, if you wanted to write <code>f(1)</code> and instead wrote <code>f(1))</code>, then R would say <code>unexpected )</code> because R didn&quot;t find a preceding <code>(</code> to match it.</div>
+            </li>
+          </ol></div>
+        </div>
     </div>;
   }
 }
@@ -138,7 +138,7 @@ class SyntaxError extends React.Component {
 let FileNotFoundError = (props) => {
   return <div className='error-help'>
     <div className='explanation block'>
-      <button className='block-header' onClick={on_header_click}>Explanation</button>
+      <button className='block-header' onClick={on_header_click}>Explanation of error</button>
       <div>
         You probably tried to open a file, and the file path you gave is incorrect. I think the path you provided was "<code>{props.missing_path[0]}</code>".
        {props.matches.length > 0 ?
@@ -158,7 +158,7 @@ let FileNotFoundError = (props) => {
 let ClosureNotSubsettableError = ({closure, subset}) => {
   return <div className='error-help'>
     <div className='explanation block'>
-      <button className='block-header' onClick={on_header_click}>Explanation</button>
+      <button className='block-header' onClick={on_header_click}>Explanation of error</button>
       <div className='content'>
         <span>The code <code>{closure}</code> is an R value of type "closure", which is another name for a function. The only thing R lets you do to a function is call it, e.g. <code>{closure}()</code>, but you tried to use the closure like a dataframe or list. Specifically, the code <code>{subset}</code> is "subsetting" <code>{closure}</code>, i.e. trying to access a subset of fields.</span>
       </div>
@@ -176,13 +176,15 @@ let ClosureNotSubsettableError = ({closure, subset}) => {
 let GenericError = (props) => {
   return <div className='error-help'>
     <div className='explanation block'>
-      <button className='block-header' onClick={on_header_click}>Explanation</button>
+      <button className='block-header' onClick={on_header_click}>Explanation of error</button>
       <div className='content'>I haven't been trained to understand this kind of error, sorry. You can at at least check out the StackOverflow links below.</div>
     </div>
   </div>;
 };
 
 class App extends React.Component {
+  state = { theme: localStorage.getItem('autota_theme') || 0 }
+
   errors = {
     'obj_not_found': NotFoundError,
     'no_function': NotFoundError,
@@ -204,9 +206,16 @@ class App extends React.Component {
     return false;
   }
 
+  _cycle_theme = () => {
+    const next_theme = (this.state.theme + 1) % THEMES.length;
+    localStorage.setItem('autota_theme', next_theme);
+    this.setState({theme: next_theme});
+  }
+
   render() {
-    return <div className={'App ' + themes[0]}>
-      <h1><img id="icon" src="autota_bot.svg" alt="AutoTA robot"></img> What went wrong?</h1>
+    return <div className={'App ' + THEMES[this.state.theme]}>
+      <h1><img id="icon" src="autota_bot.svg" alt="AutoTA robot"></img> <span>What went wrong?</span></h1>
+      <div className='theme-picker' onClick={this._cycle_theme}>🎨</div>
       {this.props.kind
         ? <div>
           <div className='error-message'>
@@ -222,36 +231,37 @@ class App extends React.Component {
             <div className='content'>{this.props.query_explain && this.props.query_explain[0].length > 0
               ? <div>
                 For this error, I searched StackOverflow for this query:
-                <div><br></br>
+                <div>
                   <code><Tooltip text={this.props.so_query}>
-                      <div>Why did I write the query this way? <br></br> {this.props.query_explain}</div>
+                    <div>Why did I write the query this way? <br></br> {this.props.query_explain}</div>
                   </Tooltip></code>
-                </div><br></br>
+                </div>
               </div>
               : <div>I searched this exact error on StackOverflow: </div>}
-            {this.props.so_questions.length > 1
-              ? <ol>
-                {this.props.so_questions.map((q, i) =>
-                  <li key={i}><a href={q.href}>{q.title}</a></li>
-                )}
-              </ol>
-              : <i><br />No results found</i>}
-          </div></div>
-          {this.props.docs[0]
-            ? <div className='block'>
-              <button className='block-header' onClick={on_header_click}>Documentation</button>
-              <div className='content'>I found a few functions around where you got the error. It might help to read their documentation or see examples of how they work. <br></br><br></br>Click below to open R's help menu.
-            <ul>
-              {this.props.docs.map((doc) =>
-                <li>
-                  <a href="#" onClick={() => this.show_help(doc)}>
-                    <code>{doc.package[0] ? <span>{doc.package}::{doc.name}</span> : doc.name}</code>
-                  </a></li>
-              )}
-            </ul></div>
-            </div>
-            : null}
-
+              {this.props.so_questions.length > 1
+                ? <ol>
+                  {this.props.so_questions.map((q, i) =>
+                    <li key={i}><a href={q.href}>{q.title}</a></li>
+                  )}
+                </ol>
+                : <i><br />No results found</i>}
+            </div></div>
+            {this.props.docs[0]
+              ? <div className='block'>
+                <button className='block-header' onClick={on_header_click}>Documentation</button>
+                <div className='content'>
+                  I found a few functions around where you got the error. It might help to read their documentation or see examples of how they work.
+                  <br /><br />Click below to open R's help menu.
+                  <ul>
+                    {this.props.docs.map((doc) =>
+                      <li>
+                        <a href="#" onClick={() => this.show_help(doc)}>
+                          <code>{doc.package[0] ? <span>{doc.package}::{doc.name}</span> : doc.name}</code>
+                        </a></li>
+                    )}
+                  </ul></div>
+              </div>
+              : null}
         </div>
         : <div>No error yet</div>
       }
