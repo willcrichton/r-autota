@@ -45,6 +45,17 @@ open_webpage <- function(args = "") {
   viewer(full_url)
 }
 
+translate_url <- function(url) {
+  # If user has an old version of RStudio, then translateLocalUrl may not be defined.
+  # Fall back to not translating if that's the case.
+  ns <- getNamespace('rstudioapi')
+  if (is.null(ns$translateLocalUrl)) {
+    url
+  } else {
+    rstudioapi::translateLocalUrl(url, absolute = TRUE)
+  }
+}
+
 #' Runs all error handlers against an rlang trace.
 #' For internal use only.
 #'
@@ -112,10 +123,7 @@ start_file_server <- function() {
     "127.0.0.1", port,
     list(staticPaths = list("/" = ui_dir))
   )
-  url <- rstudioapi::translateLocalUrl(
-    paste0("http://127.0.0.1:", port),
-    absolute = TRUE
-  )
+  url <- translate_url(paste0("http://127.0.0.1:", port))
   pkg.globals$file_url <- url
   url
 }
@@ -149,7 +157,7 @@ start_socket_server <- function() {
       }
     )
   )
-  url <- rstudioapi::translateLocalUrl(paste0("http://127.0.0.1:", port), absolute = TRUE)
+  url <- translate_url(paste0("http://127.0.0.1:", port))
   pkg.globals$socket_url <- url
   url
 }
@@ -182,7 +190,7 @@ stop_addin <- function() {
 #' @export
 addin_dev <- function() {
   httpuv::stopAllServers()
-  pkg.globals$debug <- TRUE
+  pkg.globals$debug <- FALSE
   pkg.globals$file_url <- DEV_URL
   socket_url <- start_socket_server()
   start_autota()

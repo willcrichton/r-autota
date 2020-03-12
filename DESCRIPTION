@@ -1,9 +1,9 @@
 Package: autota
 Type: Package
 Title: Auto TA
-Version: 0.1.1
+Version: 0.1.2
 Author: Will Crichton
-Maintainer: Will Crichton <wcrichto@cs.stanford.edu>
+Maintainer: Will Crichton <crichton.will@gmail.com>
 Description: Contextual assistance for common error messages.
 License: MIT + file LICENSE
 Encoding: UTF-8
