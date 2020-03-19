@@ -2,10 +2,15 @@
 % Please edit documentation in R/autota.R
 \name{stop_addin}
 \alias{stop_addin}
-\title{Disable the AutoTA RSTudio addin.}
+\title{Disable the AutoTA RSTudio addin.
+You can either run this directly, or run it through the RStudio Addins menu.}
 \usage{
 stop_addin()
 }
 \description{
 Disable the AutoTA RSTudio addin.
+You can either run this directly, or run it through the RStudio Addins menu.
+}
+\examples{
+\donttest{autota::stop_addin()}
 }

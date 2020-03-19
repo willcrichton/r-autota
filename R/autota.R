@@ -169,7 +169,10 @@ stop_socket_server <- function() {
 }
 
 #' Run the AutoTA RStudio addin.
+#' You can either run this directly, or run it through the RStudio Addins menu.
 #'
+#' @examples
+#' \donttest{autota::addin()}
 #' @export
 addin <- function() {
   file_url <- start_file_server()
@@ -178,7 +181,10 @@ addin <- function() {
 }
 
 #' Disable the AutoTA RSTudio addin.
+#' You can either run this directly, or run it through the RStudio Addins menu.
 #'
+#' @examples
+#' \donttest{autota::stop_addin()}
 #' @export
 stop_addin <- function() {
   stop_file_server()
@@ -190,7 +196,7 @@ stop_addin <- function() {
 #' @export
 addin_dev <- function() {
   httpuv::stopAllServers()
-  pkg.globals$debug <- FALSE
+  pkg.globals$debug <- TRUE
   pkg.globals$file_url <- DEV_URL
   socket_url <- start_socket_server()
   start_autota()

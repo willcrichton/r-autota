@@ -2,10 +2,15 @@
 % Please edit documentation in R/autota.R
 \name{addin}
 \alias{addin}
-\title{Run the AutoTA RStudio addin.}
+\title{Run the AutoTA RStudio addin.
+You can either run this directly, or run it through the RStudio Addins menu.}
 \usage{
 addin()
 }
 \description{
 Run the AutoTA RStudio addin.
+You can either run this directly, or run it through the RStudio Addins menu.
+}
+\examples{
+\donttest{autota::addin()}
 }

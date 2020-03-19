@@ -4,7 +4,9 @@ Title: Auto TA
 Version: 0.1.2
 Author: Will Crichton
 Maintainer: Will Crichton <crichton.will@gmail.com>
-Description: Contextual assistance for common error messages.
+Description: Auto TA (teaching assistant) provides contextual help for common error messages.
+  For example, if you get a syntax error (e.g. "unexpected string constant"), the Auto TA will explain
+  what the string constant is, why it was unexpected, and possible ways to fix it.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
