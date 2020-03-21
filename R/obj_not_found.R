@@ -19,8 +19,18 @@ get_imported_packages <- function() {
 }
 
 get_all_package_vars <- memoise::memoise(function() {
+  installed_packages <- .packages(TRUE)
+  common_packages <- list(
+    # from RDocumentation top 5
+    'devtools', 'foreign', 'cluster', 'DBI', 'odbc', 'shiny',
+
+    # from tidyverse
+    'ggplot2', 'purrr', 'tibble', 'dplyr',  'tidyr', 'stringr', 'readr', 'forcats'
+  )
+
   lookup_table <-
-    .packages(TRUE) %>%
+    common_packages %>%
+    list.filter(. %in% installed_packages) %>%
     lapply(function(pkg) {
       tryCatch(
         {
